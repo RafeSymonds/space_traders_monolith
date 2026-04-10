@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Header, HTTPException
+
 from space_traders_api import AgentsApi, Configuration
 from space_traders_api.models.get_my_agent200_response import GetMyAgent200Response
 

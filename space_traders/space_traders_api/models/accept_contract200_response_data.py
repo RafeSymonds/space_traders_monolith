@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.agent import Agent
 from space_traders_api.models.contract import Contract
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class AcceptContract200ResponseData(BaseModel):
     """
     AcceptContract200ResponseData
-    """ # noqa: E501
+    """
     contract: Contract
     agent: Agent
-    __properties: ClassVar[List[str]] = ["contract", "agent"]
+    __properties: ClassVar[list[str]] = ["contract", "agent"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +51,11 @@ class AcceptContract200ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of AcceptContract200ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +65,7 @@ class AcceptContract200ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -75,14 +75,14 @@ class AcceptContract200ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of contract
         if self.contract:
-            _dict['contract'] = self.contract.to_dict()
+            _dict["contract"] = self.contract.to_dict()
         # override the default output from pydantic by calling `to_dict()` of agent
         if self.agent:
-            _dict['agent'] = self.agent.to_dict()
+            _dict["agent"] = self.agent.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of AcceptContract200ResponseData from a dict"""
         if obj is None:
             return None
@@ -92,7 +92,7 @@ class AcceptContract200ResponseData(BaseModel):
 
         _obj = cls.model_validate({
             "contract": Contract.from_dict(obj["contract"]) if obj.get("contract") is not None else None,
-            "agent": Agent.from_dict(obj["agent"]) if obj.get("agent") is not None else None
+            "agent": Agent.from_dict(obj["agent"]) if obj.get("agent") is not None else None,
         })
         return _obj
 

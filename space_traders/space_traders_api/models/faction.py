@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,30 +13,30 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.faction_symbol import FactionSymbol
 from space_traders_api.models.faction_trait import FactionTrait
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class Faction(BaseModel):
     """
     Faction details.
-    """ # noqa: E501
+    """
     symbol: FactionSymbol
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name of the faction.")
     description: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Description of the faction.")
-    headquarters: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The waypoint in which the faction's HQ is located in.")
-    traits: List[FactionTrait] = Field(description="List of traits that define this faction.")
+    headquarters: Annotated[str, Field(min_length=1, strict=True)] | None = Field(default=None, description="The waypoint in which the faction's HQ is located in.")
+    traits: list[FactionTrait] = Field(description="List of traits that define this faction.")
     is_recruiting: StrictBool = Field(description="Whether or not the faction is currently recruiting new agents.", alias="isRecruiting")
-    __properties: ClassVar[List[str]] = ["symbol", "name", "description", "headquarters", "traits", "isRecruiting"]
+    __properties: ClassVar[list[str]] = ["symbol", "name", "description", "headquarters", "traits", "isRecruiting"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +55,11 @@ class Faction(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Faction from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +69,7 @@ class Faction(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -84,11 +83,11 @@ class Faction(BaseModel):
             for _item_traits in self.traits:
                 if _item_traits:
                     _items.append(_item_traits.to_dict())
-            _dict['traits'] = _items
+            _dict["traits"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Faction from a dict"""
         if obj is None:
             return None
@@ -102,7 +101,7 @@ class Faction(BaseModel):
             "description": obj.get("description"),
             "headquarters": obj.get("headquarters"),
             "traits": [FactionTrait.from_dict(_item) for _item in obj["traits"]] if obj.get("traits") is not None else None,
-            "isRecruiting": obj.get("isRecruiting")
+            "isRecruiting": obj.get("isRecruiting"),
         })
         return _obj
 

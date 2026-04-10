@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,30 +13,31 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.agent import Agent
 from space_traders_api.models.contract import Contract
 from space_traders_api.models.faction import Faction
 from space_traders_api.models.ship import Ship
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class Register201ResponseData(BaseModel):
     """
     Register201ResponseData
-    """ # noqa: E501
+    """
     token: StrictStr = Field(description="A Bearer token for accessing secured API endpoints.")
     agent: Agent
     faction: Faction
     contract: Contract
-    ships: List[Ship]
-    __properties: ClassVar[List[str]] = ["token", "agent", "faction", "contract", "ships"]
+    ships: list[Ship]
+    __properties: ClassVar[list[str]] = ["token", "agent", "faction", "contract", "ships"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +56,11 @@ class Register201ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Register201ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +70,7 @@ class Register201ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -80,24 +80,24 @@ class Register201ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of agent
         if self.agent:
-            _dict['agent'] = self.agent.to_dict()
+            _dict["agent"] = self.agent.to_dict()
         # override the default output from pydantic by calling `to_dict()` of faction
         if self.faction:
-            _dict['faction'] = self.faction.to_dict()
+            _dict["faction"] = self.faction.to_dict()
         # override the default output from pydantic by calling `to_dict()` of contract
         if self.contract:
-            _dict['contract'] = self.contract.to_dict()
+            _dict["contract"] = self.contract.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in ships (list)
         _items = []
         if self.ships:
             for _item_ships in self.ships:
                 if _item_ships:
                     _items.append(_item_ships.to_dict())
-            _dict['ships'] = _items
+            _dict["ships"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Register201ResponseData from a dict"""
         if obj is None:
             return None
@@ -110,7 +110,7 @@ class Register201ResponseData(BaseModel):
             "agent": Agent.from_dict(obj["agent"]) if obj.get("agent") is not None else None,
             "faction": Faction.from_dict(obj["faction"]) if obj.get("faction") is not None else None,
             "contract": Contract.from_dict(obj["contract"]) if obj.get("contract") is not None else None,
-            "ships": [Ship.from_dict(_item) for _item in obj["ships"]] if obj.get("ships") is not None else None
+            "ships": [Ship.from_dict(_item) for _item in obj["ships"]] if obj.get("ships") is not None else None,
         })
         return _obj
 

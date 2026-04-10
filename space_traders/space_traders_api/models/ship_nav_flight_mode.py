@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class ShipNavFlightMode(str, Enum):
@@ -27,10 +27,10 @@ class ShipNavFlightMode(str, Enum):
     """
     allowed enum values
     """
-    DRIFT = 'DRIFT'
-    STEALTH = 'STEALTH'
-    CRUISE = 'CRUISE'
-    BURN = 'BURN'
+    DRIFT = "DRIFT"
+    STEALTH = "STEALTH"
+    CRUISE = "CRUISE"
+    BURN = "BURN"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

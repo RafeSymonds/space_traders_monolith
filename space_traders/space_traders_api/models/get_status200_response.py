@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,26 +13,27 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.get_status200_response_announcements_inner import GetStatus200ResponseAnnouncementsInner
 from space_traders_api.models.get_status200_response_health import GetStatus200ResponseHealth
 from space_traders_api.models.get_status200_response_leaderboards import GetStatus200ResponseLeaderboards
 from space_traders_api.models.get_status200_response_links_inner import GetStatus200ResponseLinksInner
 from space_traders_api.models.get_status200_response_server_resets import GetStatus200ResponseServerResets
 from space_traders_api.models.get_status200_response_stats import GetStatus200ResponseStats
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class GetStatus200Response(BaseModel):
     """
     Fetched status successfully.
-    """ # noqa: E501
+    """
     status: StrictStr = Field(description="The current status of the game server.")
     version: StrictStr = Field(description="The current version of the API.")
     reset_date: StrictStr = Field(description="The date when the game server was last reset.", alias="resetDate")
@@ -42,9 +42,9 @@ class GetStatus200Response(BaseModel):
     health: GetStatus200ResponseHealth
     leaderboards: GetStatus200ResponseLeaderboards
     server_resets: GetStatus200ResponseServerResets = Field(alias="serverResets")
-    announcements: List[GetStatus200ResponseAnnouncementsInner]
-    links: List[GetStatus200ResponseLinksInner]
-    __properties: ClassVar[List[str]] = ["status", "version", "resetDate", "description", "stats", "health", "leaderboards", "serverResets", "announcements", "links"]
+    announcements: list[GetStatus200ResponseAnnouncementsInner]
+    links: list[GetStatus200ResponseLinksInner]
+    __properties: ClassVar[list[str]] = ["status", "version", "resetDate", "description", "stats", "health", "leaderboards", "serverResets", "announcements", "links"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -63,11 +63,11 @@ class GetStatus200Response(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of GetStatus200Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -77,7 +77,7 @@ class GetStatus200Response(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -87,34 +87,34 @@ class GetStatus200Response(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of stats
         if self.stats:
-            _dict['stats'] = self.stats.to_dict()
+            _dict["stats"] = self.stats.to_dict()
         # override the default output from pydantic by calling `to_dict()` of health
         if self.health:
-            _dict['health'] = self.health.to_dict()
+            _dict["health"] = self.health.to_dict()
         # override the default output from pydantic by calling `to_dict()` of leaderboards
         if self.leaderboards:
-            _dict['leaderboards'] = self.leaderboards.to_dict()
+            _dict["leaderboards"] = self.leaderboards.to_dict()
         # override the default output from pydantic by calling `to_dict()` of server_resets
         if self.server_resets:
-            _dict['serverResets'] = self.server_resets.to_dict()
+            _dict["serverResets"] = self.server_resets.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in announcements (list)
         _items = []
         if self.announcements:
             for _item_announcements in self.announcements:
                 if _item_announcements:
                     _items.append(_item_announcements.to_dict())
-            _dict['announcements'] = _items
+            _dict["announcements"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in links (list)
         _items = []
         if self.links:
             for _item_links in self.links:
                 if _item_links:
                     _items.append(_item_links.to_dict())
-            _dict['links'] = _items
+            _dict["links"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of GetStatus200Response from a dict"""
         if obj is None:
             return None
@@ -132,7 +132,7 @@ class GetStatus200Response(BaseModel):
             "leaderboards": GetStatus200ResponseLeaderboards.from_dict(obj["leaderboards"]) if obj.get("leaderboards") is not None else None,
             "serverResets": GetStatus200ResponseServerResets.from_dict(obj["serverResets"]) if obj.get("serverResets") is not None else None,
             "announcements": [GetStatus200ResponseAnnouncementsInner.from_dict(_item) for _item in obj["announcements"]] if obj.get("announcements") is not None else None,
-            "links": [GetStatus200ResponseLinksInner.from_dict(_item) for _item in obj["links"]] if obj.get("links") is not None else None
+            "links": [GetStatus200ResponseLinksInner.from_dict(_item) for _item in obj["links"]] if obj.get("links") is not None else None,
         })
         return _obj
 

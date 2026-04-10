@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class SurveySize(str, Enum):
@@ -27,9 +27,9 @@ class SurveySize(str, Enum):
     """
     allowed enum values
     """
-    SMALL = 'SMALL'
-    MODERATE = 'MODERATE'
-    LARGE = 'LARGE'
+    SMALL = "SMALL"
+    MODERATE = "MODERATE"
+    LARGE = "LARGE"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

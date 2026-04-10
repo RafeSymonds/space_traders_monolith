@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,26 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
-from space_traders_api.models.ship_fuel_consumed import ShipFuelConsumed
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.ship_fuel_consumed import ShipFuelConsumed
+
 
 class ShipFuel(BaseModel):
     """
     Details of the ship's fuel tanks including how much fuel was consumed during the last transit or action.
-    """ # noqa: E501
+    """
     current: Annotated[int, Field(strict=True, ge=0)] = Field(description="The current amount of fuel in the ship's tanks.")
     capacity: Annotated[int, Field(strict=True, ge=0)] = Field(description="The maximum amount of fuel the ship's tanks can hold.")
-    consumed: Optional[ShipFuelConsumed] = None
-    __properties: ClassVar[List[str]] = ["current", "capacity", "consumed"]
+    consumed: ShipFuelConsumed | None = None
+    __properties: ClassVar[list[str]] = ["current", "capacity", "consumed"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,11 +51,11 @@ class ShipFuel(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipFuel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -66,7 +65,7 @@ class ShipFuel(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -76,11 +75,11 @@ class ShipFuel(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of consumed
         if self.consumed:
-            _dict['consumed'] = self.consumed.to_dict()
+            _dict["consumed"] = self.consumed.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipFuel from a dict"""
         if obj is None:
             return None
@@ -91,7 +90,7 @@ class ShipFuel(BaseModel):
         _obj = cls.model_validate({
             "current": obj.get("current"),
             "capacity": obj.get("capacity"),
-            "consumed": ShipFuelConsumed.from_dict(obj["consumed"]) if obj.get("consumed") is not None else None
+            "consumed": ShipFuelConsumed.from_dict(obj["consumed"]) if obj.get("consumed") is not None else None,
         })
         return _obj
 

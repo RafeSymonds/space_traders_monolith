@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,23 +13,24 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
-from space_traders_api.models.ship_nav_flight_mode import ShipNavFlightMode
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.ship_nav_flight_mode import ShipNavFlightMode
+
 
 class PatchShipNavRequest(BaseModel):
     """
     PatchShipNavRequest
-    """ # noqa: E501
-    flight_mode: Optional[ShipNavFlightMode] = Field(default=ShipNavFlightMode.CRUISE, alias="flightMode")
-    __properties: ClassVar[List[str]] = ["flightMode"]
+    """
+    flight_mode: ShipNavFlightMode | None = Field(default=ShipNavFlightMode.CRUISE, alias="flightMode")
+    __properties: ClassVar[list[str]] = ["flightMode"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -49,11 +49,11 @@ class PatchShipNavRequest(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of PatchShipNavRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -63,7 +63,7 @@ class PatchShipNavRequest(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -74,7 +74,7 @@ class PatchShipNavRequest(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of PatchShipNavRequest from a dict"""
         if obj is None:
             return None
@@ -83,7 +83,7 @@ class PatchShipNavRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "flightMode": obj.get("flightMode") if obj.get("flightMode") is not None else ShipNavFlightMode.CRUISE
+            "flightMode": obj.get("flightMode") if obj.get("flightMode") is not None else ShipNavFlightMode.CRUISE,
         })
         return _obj
 

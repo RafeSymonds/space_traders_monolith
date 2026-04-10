@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class ShipRole(str, Enum):
@@ -27,20 +27,20 @@ class ShipRole(str, Enum):
     """
     allowed enum values
     """
-    FABRICATOR = 'FABRICATOR'
-    HARVESTER = 'HARVESTER'
-    HAULER = 'HAULER'
-    INTERCEPTOR = 'INTERCEPTOR'
-    EXCAVATOR = 'EXCAVATOR'
-    TRANSPORT = 'TRANSPORT'
-    REPAIR = 'REPAIR'
-    SURVEYOR = 'SURVEYOR'
-    COMMAND = 'COMMAND'
-    CARRIER = 'CARRIER'
-    PATROL = 'PATROL'
-    SATELLITE = 'SATELLITE'
-    EXPLORER = 'EXPLORER'
-    REFINERY = 'REFINERY'
+    FABRICATOR = "FABRICATOR"
+    HARVESTER = "HARVESTER"
+    HAULER = "HAULER"
+    INTERCEPTOR = "INTERCEPTOR"
+    EXCAVATOR = "EXCAVATOR"
+    TRANSPORT = "TRANSPORT"
+    REPAIR = "REPAIR"
+    SURVEYOR = "SURVEYOR"
+    COMMAND = "COMMAND"
+    CARRIER = "CARRIER"
+    PATROL = "PATROL"
+    SATELLITE = "SATELLITE"
+    EXPLORER = "EXPLORER"
+    REFINERY = "REFINERY"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

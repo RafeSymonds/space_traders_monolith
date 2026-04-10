@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class FactionSymbol(str, Enum):
@@ -27,25 +27,25 @@ class FactionSymbol(str, Enum):
     """
     allowed enum values
     """
-    COSMIC = 'COSMIC'
-    VOID = 'VOID'
-    GALACTIC = 'GALACTIC'
-    QUANTUM = 'QUANTUM'
-    DOMINION = 'DOMINION'
-    ASTRO = 'ASTRO'
-    CORSAIRS = 'CORSAIRS'
-    OBSIDIAN = 'OBSIDIAN'
-    AEGIS = 'AEGIS'
-    UNITED = 'UNITED'
-    SOLITARY = 'SOLITARY'
-    COBALT = 'COBALT'
-    OMEGA = 'OMEGA'
-    ECHO = 'ECHO'
-    LORDS = 'LORDS'
-    CULT = 'CULT'
-    ANCIENTS = 'ANCIENTS'
-    SHADOW = 'SHADOW'
-    ETHEREAL = 'ETHEREAL'
+    COSMIC = "COSMIC"
+    VOID = "VOID"
+    GALACTIC = "GALACTIC"
+    QUANTUM = "QUANTUM"
+    DOMINION = "DOMINION"
+    ASTRO = "ASTRO"
+    CORSAIRS = "CORSAIRS"
+    OBSIDIAN = "OBSIDIAN"
+    AEGIS = "AEGIS"
+    UNITED = "UNITED"
+    SOLITARY = "SOLITARY"
+    COBALT = "COBALT"
+    OMEGA = "OMEGA"
+    ECHO = "ECHO"
+    LORDS = "LORDS"
+    CULT = "CULT"
+    ANCIENTS = "ANCIENTS"
+    SHADOW = "SHADOW"
+    ETHEREAL = "ETHEREAL"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,37 +13,37 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.activity_level import ActivityLevel
 from space_traders_api.models.supply_level import SupplyLevel
 from space_traders_api.models.trade_symbol import TradeSymbol
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class MarketTradeGood(BaseModel):
     """
     MarketTradeGood
-    """ # noqa: E501
+    """
     symbol: TradeSymbol
     type: StrictStr = Field(description="The type of trade good (export, import, or exchange).")
     trade_volume: Annotated[int, Field(strict=True, ge=1)] = Field(description="This is the maximum number of units that can be purchased or sold at this market in a single trade for this good. Trade volume also gives an indication of price volatility. A market with a low trade volume will have large price swings, while high trade volume will be more resilient to price changes.", alias="tradeVolume")
     supply: SupplyLevel
-    activity: Optional[ActivityLevel] = None
+    activity: ActivityLevel | None = None
     purchase_price: Annotated[int, Field(strict=True, ge=0)] = Field(description="The price at which this good can be purchased from the market.", alias="purchasePrice")
     sell_price: Annotated[int, Field(strict=True, ge=0)] = Field(description="The price at which this good can be sold to the market.", alias="sellPrice")
-    __properties: ClassVar[List[str]] = ["symbol", "type", "tradeVolume", "supply", "activity", "purchasePrice", "sellPrice"]
+    __properties: ClassVar[list[str]] = ["symbol", "type", "tradeVolume", "supply", "activity", "purchasePrice", "sellPrice"]
 
-    @field_validator('type')
+    @field_validator("type")
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['EXPORT', 'IMPORT', 'EXCHANGE']):
+        if value not in set(["EXPORT", "IMPORT", "EXCHANGE"]):
             raise ValueError("must be one of enum values ('EXPORT', 'IMPORT', 'EXCHANGE')")
         return value
 
@@ -65,11 +64,11 @@ class MarketTradeGood(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of MarketTradeGood from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -79,7 +78,7 @@ class MarketTradeGood(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -90,7 +89,7 @@ class MarketTradeGood(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of MarketTradeGood from a dict"""
         if obj is None:
             return None
@@ -105,7 +104,7 @@ class MarketTradeGood(BaseModel):
             "supply": obj.get("supply"),
             "activity": obj.get("activity"),
             "purchasePrice": obj.get("purchasePrice"),
-            "sellPrice": obj.get("sellPrice")
+            "sellPrice": obj.get("sellPrice"),
         })
         return _obj
 

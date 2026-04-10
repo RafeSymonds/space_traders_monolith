@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,30 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from space_traders_api.models.get_status200_response_leaderboards_most_credits_inner import GetStatus200ResponseLeaderboardsMostCreditsInner
-from space_traders_api.models.get_status200_response_leaderboards_most_submitted_charts_inner import GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.get_status200_response_leaderboards_most_credits_inner import (
+    GetStatus200ResponseLeaderboardsMostCreditsInner,
+)
+from space_traders_api.models.get_status200_response_leaderboards_most_submitted_charts_inner import (
+    GetStatus200ResponseLeaderboardsMostSubmittedChartsInner,
+)
+
 
 class GetStatus200ResponseLeaderboards(BaseModel):
     """
     GetStatus200ResponseLeaderboards
-    """ # noqa: E501
-    most_credits: List[GetStatus200ResponseLeaderboardsMostCreditsInner] = Field(description="Top agents with the most credits.", alias="mostCredits")
-    most_submitted_charts: List[GetStatus200ResponseLeaderboardsMostSubmittedChartsInner] = Field(description="Top agents with the most charted submitted.", alias="mostSubmittedCharts")
-    __properties: ClassVar[List[str]] = ["mostCredits", "mostSubmittedCharts"]
+    """
+    most_credits: list[GetStatus200ResponseLeaderboardsMostCreditsInner] = Field(description="Top agents with the most credits.", alias="mostCredits")
+    most_submitted_charts: list[GetStatus200ResponseLeaderboardsMostSubmittedChartsInner] = Field(description="Top agents with the most charted submitted.", alias="mostSubmittedCharts")
+    __properties: ClassVar[list[str]] = ["mostCredits", "mostSubmittedCharts"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +55,11 @@ class GetStatus200ResponseLeaderboards(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of GetStatus200ResponseLeaderboards from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +69,7 @@ class GetStatus200ResponseLeaderboards(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -79,18 +83,18 @@ class GetStatus200ResponseLeaderboards(BaseModel):
             for _item_most_credits in self.most_credits:
                 if _item_most_credits:
                     _items.append(_item_most_credits.to_dict())
-            _dict['mostCredits'] = _items
+            _dict["mostCredits"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in most_submitted_charts (list)
         _items = []
         if self.most_submitted_charts:
             for _item_most_submitted_charts in self.most_submitted_charts:
                 if _item_most_submitted_charts:
                     _items.append(_item_most_submitted_charts.to_dict())
-            _dict['mostSubmittedCharts'] = _items
+            _dict["mostSubmittedCharts"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of GetStatus200ResponseLeaderboards from a dict"""
         if obj is None:
             return None
@@ -100,7 +104,7 @@ class GetStatus200ResponseLeaderboards(BaseModel):
 
         _obj = cls.model_validate({
             "mostCredits": [GetStatus200ResponseLeaderboardsMostCreditsInner.from_dict(_item) for _item in obj["mostCredits"]] if obj.get("mostCredits") is not None else None,
-            "mostSubmittedCharts": [GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.from_dict(_item) for _item in obj["mostSubmittedCharts"]] if obj.get("mostSubmittedCharts") is not None else None
+            "mostSubmittedCharts": [GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.from_dict(_item) for _item in obj["mostSubmittedCharts"]] if obj.get("mostSubmittedCharts") is not None else None,
         })
         return _obj
 

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,34 +13,34 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.system_faction import SystemFaction
 from space_traders_api.models.system_type import SystemType
 from space_traders_api.models.system_waypoint import SystemWaypoint
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class System(BaseModel):
     """
     System details.
-    """ # noqa: E501
-    constellation: Optional[StrictStr] = Field(default=None, description="The constellation that the system is part of.")
+    """
+    constellation: StrictStr | None = Field(default=None, description="The constellation that the system is part of.")
     symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the system.")
     sector_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the sector.", alias="sectorSymbol")
     type: SystemType
     x: StrictInt = Field(description="Relative position of the system in the sector in the x axis.")
     y: StrictInt = Field(description="Relative position of the system in the sector in the y axis.")
-    waypoints: List[SystemWaypoint] = Field(description="Waypoints in this system.")
-    factions: List[SystemFaction] = Field(description="Factions that control this system.")
-    name: Optional[StrictStr] = Field(default=None, description="The name of the system.")
-    __properties: ClassVar[List[str]] = ["constellation", "symbol", "sectorSymbol", "type", "x", "y", "waypoints", "factions", "name"]
+    waypoints: list[SystemWaypoint] = Field(description="Waypoints in this system.")
+    factions: list[SystemFaction] = Field(description="Factions that control this system.")
+    name: StrictStr | None = Field(default=None, description="The name of the system.")
+    __properties: ClassVar[list[str]] = ["constellation", "symbol", "sectorSymbol", "type", "x", "y", "waypoints", "factions", "name"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -60,11 +59,11 @@ class System(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of System from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -74,7 +73,7 @@ class System(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -88,18 +87,18 @@ class System(BaseModel):
             for _item_waypoints in self.waypoints:
                 if _item_waypoints:
                     _items.append(_item_waypoints.to_dict())
-            _dict['waypoints'] = _items
+            _dict["waypoints"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in factions (list)
         _items = []
         if self.factions:
             for _item_factions in self.factions:
                 if _item_factions:
                     _items.append(_item_factions.to_dict())
-            _dict['factions'] = _items
+            _dict["factions"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of System from a dict"""
         if obj is None:
             return None
@@ -116,7 +115,7 @@ class System(BaseModel):
             "y": obj.get("y"),
             "waypoints": [SystemWaypoint.from_dict(_item) for _item in obj["waypoints"]] if obj.get("waypoints") is not None else None,
             "factions": [SystemFaction.from_dict(_item) for _item in obj["factions"]] if obj.get("factions") is not None else None,
-            "name": obj.get("name")
+            "name": obj.get("name"),
         })
         return _obj
 

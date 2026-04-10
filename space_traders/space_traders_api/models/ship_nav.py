@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,30 +13,30 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.ship_nav_flight_mode import ShipNavFlightMode
 from space_traders_api.models.ship_nav_route import ShipNavRoute
 from space_traders_api.models.ship_nav_status import ShipNavStatus
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class ShipNav(BaseModel):
     """
     The navigation information of the ship.
-    """ # noqa: E501
+    """
     system_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the system.", alias="systemSymbol")
     waypoint_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the waypoint.", alias="waypointSymbol")
     route: ShipNavRoute
     status: ShipNavStatus
     flight_mode: ShipNavFlightMode = Field(alias="flightMode")
-    __properties: ClassVar[List[str]] = ["systemSymbol", "waypointSymbol", "route", "status", "flightMode"]
+    __properties: ClassVar[list[str]] = ["systemSymbol", "waypointSymbol", "route", "status", "flightMode"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +55,11 @@ class ShipNav(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipNav from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +69,7 @@ class ShipNav(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -80,11 +79,11 @@ class ShipNav(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of route
         if self.route:
-            _dict['route'] = self.route.to_dict()
+            _dict["route"] = self.route.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipNav from a dict"""
         if obj is None:
             return None
@@ -97,7 +96,7 @@ class ShipNav(BaseModel):
             "waypointSymbol": obj.get("waypointSymbol"),
             "route": ShipNavRoute.from_dict(obj["route"]) if obj.get("route") is not None else None,
             "status": obj.get("status"),
-            "flightMode": obj.get("flightMode") if obj.get("flightMode") is not None else ShipNavFlightMode.CRUISE
+            "flightMode": obj.get("flightMode") if obj.get("flightMode") is not None else ShipNavFlightMode.CRUISE,
         })
         return _obj
 

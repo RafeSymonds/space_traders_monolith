@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source env/bin/activate
+
+echo "=== Running Tests ==="
+python -m pytest tests/ -v --tb=short
+
+echo ""
+echo "=== Test Summary ==="
+python -m pytest tests/ --tb=no -q

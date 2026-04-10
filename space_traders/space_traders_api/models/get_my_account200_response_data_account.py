@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,26 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
-
 from datetime import datetime
+from typing import Any, ClassVar, Self
+
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class GetMyAccount200ResponseDataAccount(BaseModel):
     """
     GetMyAccount200ResponseDataAccount
-    """ # noqa: E501
+    """
     id: StrictStr
-    email: Optional[StrictStr]
-    token: Optional[StrictStr] = None
+    email: StrictStr | None
+    token: StrictStr | None = None
     created_at: datetime = Field(alias="createdAt")
-    __properties: ClassVar[List[str]] = ["id", "email", "token", "createdAt"]
+    __properties: ClassVar[list[str]] = ["id", "email", "token", "createdAt"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,11 +51,11 @@ class GetMyAccount200ResponseDataAccount(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of GetMyAccount200ResponseDataAccount from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -66,7 +65,7 @@ class GetMyAccount200ResponseDataAccount(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -77,12 +76,12 @@ class GetMyAccount200ResponseDataAccount(BaseModel):
         # set to None if email (nullable) is None
         # and model_fields_set contains the field
         if self.email is None and "email" in self.model_fields_set:
-            _dict['email'] = None
+            _dict["email"] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of GetMyAccount200ResponseDataAccount from a dict"""
         if obj is None:
             return None
@@ -94,7 +93,7 @@ class GetMyAccount200ResponseDataAccount(BaseModel):
             "id": obj.get("id"),
             "email": obj.get("email"),
             "token": obj.get("token"),
-            "createdAt": obj.get("createdAt")
+            "createdAt": obj.get("createdAt"),
         })
         return _obj
 

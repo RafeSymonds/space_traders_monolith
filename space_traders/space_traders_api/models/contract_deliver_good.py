@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,26 +13,25 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class ContractDeliverGood(BaseModel):
     """
     The details of a delivery contract. Includes the type of good, units needed, and the destination.
-    """ # noqa: E501
+    """
     trade_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the trade good to deliver.", alias="tradeSymbol")
     destination_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The destination where goods need to be delivered.", alias="destinationSymbol")
     units_required: StrictInt = Field(description="The number of units that need to be delivered on this contract.", alias="unitsRequired")
     units_fulfilled: StrictInt = Field(description="The number of units fulfilled on this contract.", alias="unitsFulfilled")
-    __properties: ClassVar[List[str]] = ["tradeSymbol", "destinationSymbol", "unitsRequired", "unitsFulfilled"]
+    __properties: ClassVar[list[str]] = ["tradeSymbol", "destinationSymbol", "unitsRequired", "unitsFulfilled"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,11 +50,11 @@ class ContractDeliverGood(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ContractDeliverGood from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -66,7 +64,7 @@ class ContractDeliverGood(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -77,7 +75,7 @@ class ContractDeliverGood(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ContractDeliverGood from a dict"""
         if obj is None:
             return None
@@ -89,7 +87,7 @@ class ContractDeliverGood(BaseModel):
             "tradeSymbol": obj.get("tradeSymbol"),
             "destinationSymbol": obj.get("destinationSymbol"),
             "unitsRequired": obj.get("unitsRequired"),
-            "unitsFulfilled": obj.get("unitsFulfilled")
+            "unitsFulfilled": obj.get("unitsFulfilled"),
         })
         return _obj
 

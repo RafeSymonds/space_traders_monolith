@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class SupplyLevel(str, Enum):
@@ -27,11 +27,11 @@ class SupplyLevel(str, Enum):
     """
     allowed enum values
     """
-    SCARCE = 'SCARCE'
-    LIMITED = 'LIMITED'
-    MODERATE = 'MODERATE'
-    HIGH = 'HIGH'
-    ABUNDANT = 'ABUNDANT'
+    SCARCE = "SCARCE"
+    LIMITED = "LIMITED"
+    MODERATE = "MODERATE"
+    HIGH = "HIGH"
+    ABUNDANT = "ABUNDANT"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

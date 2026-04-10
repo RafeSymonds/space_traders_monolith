@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
-from space_traders_api.models.construction_material import ConstructionMaterial
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.construction_material import ConstructionMaterial
+
 
 class Construction(BaseModel):
     """
     The construction details of a waypoint.
-    """ # noqa: E501
+    """
     symbol: StrictStr = Field(description="The symbol of the waypoint.")
-    materials: List[ConstructionMaterial] = Field(description="The materials required to construct the waypoint.")
+    materials: list[ConstructionMaterial] = Field(description="The materials required to construct the waypoint.")
     is_complete: StrictBool = Field(description="Whether the waypoint has been constructed.", alias="isComplete")
-    __properties: ClassVar[List[str]] = ["symbol", "materials", "isComplete"]
+    __properties: ClassVar[list[str]] = ["symbol", "materials", "isComplete"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +51,11 @@ class Construction(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Construction from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +65,7 @@ class Construction(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -79,11 +79,11 @@ class Construction(BaseModel):
             for _item_materials in self.materials:
                 if _item_materials:
                     _items.append(_item_materials.to_dict())
-            _dict['materials'] = _items
+            _dict["materials"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Construction from a dict"""
         if obj is None:
             return None
@@ -94,7 +94,7 @@ class Construction(BaseModel):
         _obj = cls.model_validate({
             "symbol": obj.get("symbol"),
             "materials": [ConstructionMaterial.from_dict(_item) for _item in obj["materials"]] if obj.get("materials") is not None else None,
-            "isComplete": obj.get("isComplete")
+            "isComplete": obj.get("isComplete"),
         })
         return _obj
 

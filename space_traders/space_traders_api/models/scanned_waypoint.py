@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,36 +13,36 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.chart import Chart
 from space_traders_api.models.waypoint_faction import WaypointFaction
 from space_traders_api.models.waypoint_orbital import WaypointOrbital
 from space_traders_api.models.waypoint_trait import WaypointTrait
 from space_traders_api.models.waypoint_type import WaypointType
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class ScannedWaypoint(BaseModel):
     """
     A waypoint that was scanned by a ship.
-    """ # noqa: E501
+    """
     symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the waypoint.")
     type: WaypointType
     system_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the system.", alias="systemSymbol")
     x: StrictInt = Field(description="Position in the universe in the x axis.")
     y: StrictInt = Field(description="Position in the universe in the y axis.")
-    orbitals: List[WaypointOrbital] = Field(description="List of waypoints that orbit this waypoint.")
-    faction: Optional[WaypointFaction] = None
-    traits: List[WaypointTrait] = Field(description="The traits of the waypoint.")
-    chart: Optional[Chart] = None
-    __properties: ClassVar[List[str]] = ["symbol", "type", "systemSymbol", "x", "y", "orbitals", "faction", "traits", "chart"]
+    orbitals: list[WaypointOrbital] = Field(description="List of waypoints that orbit this waypoint.")
+    faction: WaypointFaction | None = None
+    traits: list[WaypointTrait] = Field(description="The traits of the waypoint.")
+    chart: Chart | None = None
+    __properties: ClassVar[list[str]] = ["symbol", "type", "systemSymbol", "x", "y", "orbitals", "faction", "traits", "chart"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -62,11 +61,11 @@ class ScannedWaypoint(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ScannedWaypoint from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -76,7 +75,7 @@ class ScannedWaypoint(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -90,24 +89,24 @@ class ScannedWaypoint(BaseModel):
             for _item_orbitals in self.orbitals:
                 if _item_orbitals:
                     _items.append(_item_orbitals.to_dict())
-            _dict['orbitals'] = _items
+            _dict["orbitals"] = _items
         # override the default output from pydantic by calling `to_dict()` of faction
         if self.faction:
-            _dict['faction'] = self.faction.to_dict()
+            _dict["faction"] = self.faction.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in traits (list)
         _items = []
         if self.traits:
             for _item_traits in self.traits:
                 if _item_traits:
                     _items.append(_item_traits.to_dict())
-            _dict['traits'] = _items
+            _dict["traits"] = _items
         # override the default output from pydantic by calling `to_dict()` of chart
         if self.chart:
-            _dict['chart'] = self.chart.to_dict()
+            _dict["chart"] = self.chart.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ScannedWaypoint from a dict"""
         if obj is None:
             return None
@@ -124,7 +123,7 @@ class ScannedWaypoint(BaseModel):
             "orbitals": [WaypointOrbital.from_dict(_item) for _item in obj["orbitals"]] if obj.get("orbitals") is not None else None,
             "faction": WaypointFaction.from_dict(obj["faction"]) if obj.get("faction") is not None else None,
             "traits": [WaypointTrait.from_dict(_item) for _item in obj["traits"]] if obj.get("traits") is not None else None,
-            "chart": Chart.from_dict(obj["chart"]) if obj.get("chart") is not None else None
+            "chart": Chart.from_dict(obj["chart"]) if obj.get("chart") is not None else None,
         })
         return _obj
 

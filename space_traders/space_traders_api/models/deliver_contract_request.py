@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,24 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class DeliverContractRequest(BaseModel):
     """
     DeliverContractRequest
-    """ # noqa: E501
+    """
     ship_symbol: StrictStr = Field(description="Symbol of a ship located in the destination to deliver a contract and that has a good to deliver in its cargo.", alias="shipSymbol")
     trade_symbol: StrictStr = Field(description="The symbol of the good to deliver.", alias="tradeSymbol")
     units: Annotated[int, Field(strict=True, ge=1)] = Field(description="Amount of units to deliver.")
-    __properties: ClassVar[List[str]] = ["shipSymbol", "tradeSymbol", "units"]
+    __properties: ClassVar[list[str]] = ["shipSymbol", "tradeSymbol", "units"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +49,11 @@ class DeliverContractRequest(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of DeliverContractRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +63,7 @@ class DeliverContractRequest(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -76,7 +74,7 @@ class DeliverContractRequest(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of DeliverContractRequest from a dict"""
         if obj is None:
             return None
@@ -87,7 +85,7 @@ class DeliverContractRequest(BaseModel):
         _obj = cls.model_validate({
             "shipSymbol": obj.get("shipSymbol"),
             "tradeSymbol": obj.get("tradeSymbol"),
-            "units": obj.get("units")
+            "units": obj.get("units"),
         })
         return _obj
 

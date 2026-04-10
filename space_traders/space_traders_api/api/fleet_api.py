@@ -11,14 +11,12 @@
 """  # noqa: E501
 
 
-import warnings
-from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
-from typing import Any, Dict, List, Optional, Tuple, Union
-from typing_extensions import Annotated
+from typing import Annotated, Any
 
-from pydantic import Field, StrictStr
-from typing import Optional
-from typing_extensions import Annotated
+from pydantic import Field, StrictFloat, StrictInt, StrictStr, validate_call
+
+from space_traders_api.api_client import ApiClient, RequestSerialized
+from space_traders_api.api_response import ApiResponse
 from space_traders_api.models.create_chart201_response import CreateChart201Response
 from space_traders_api.models.create_ship_ship_scan201_response import CreateShipShipScan201Response
 from space_traders_api.models.create_ship_system_scan201_response import CreateShipSystemScan201Response
@@ -69,9 +67,6 @@ from space_traders_api.models.siphon_resources201_response import SiphonResource
 from space_traders_api.models.survey import Survey
 from space_traders_api.models.transfer_cargo200_response import TransferCargo200Response
 from space_traders_api.models.transfer_cargo_request import TransferCargoRequest
-
-from space_traders_api.api_client import ApiClient, RequestSerialized
-from space_traders_api.api_response import ApiResponse
 from space_traders_api.rest import RESTResponseType
 
 
@@ -92,17 +87,10 @@ class FleetApi:
     def create_chart(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> CreateChart201Response:
         """Create Chart
@@ -138,15 +126,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateChart201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateChart201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -159,17 +147,10 @@ class FleetApi:
     def create_chart_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[CreateChart201Response]:
         """Create Chart
@@ -205,15 +186,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateChart201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateChart201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -226,17 +207,10 @@ class FleetApi:
     def create_chart_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Create Chart
@@ -272,15 +246,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateChart201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateChart201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -296,21 +270,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -318,22 +292,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/chart',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/chart",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -343,7 +317,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -353,17 +327,10 @@ class FleetApi:
     def create_ship_ship_scan(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> CreateShipShipScan201Response:
         """Scan Ships
@@ -399,15 +366,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipShipScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipShipScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -420,17 +387,10 @@ class FleetApi:
     def create_ship_ship_scan_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[CreateShipShipScan201Response]:
         """Scan Ships
@@ -466,15 +426,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipShipScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipShipScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -487,17 +447,10 @@ class FleetApi:
     def create_ship_ship_scan_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Scan Ships
@@ -533,15 +486,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipShipScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipShipScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -557,21 +510,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -579,22 +532,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/scan/ships',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/scan/ships",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -604,7 +557,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -614,17 +567,10 @@ class FleetApi:
     def create_ship_system_scan(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> CreateShipSystemScan201Response:
         """Scan Systems
@@ -660,15 +606,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipSystemScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipSystemScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -681,17 +627,10 @@ class FleetApi:
     def create_ship_system_scan_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[CreateShipSystemScan201Response]:
         """Scan Systems
@@ -727,15 +666,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipSystemScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipSystemScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -748,17 +687,10 @@ class FleetApi:
     def create_ship_system_scan_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Scan Systems
@@ -794,15 +726,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipSystemScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipSystemScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -818,21 +750,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -840,22 +772,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/scan/systems',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/scan/systems",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -865,7 +797,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -875,17 +807,10 @@ class FleetApi:
     def create_ship_waypoint_scan(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> CreateShipWaypointScan201Response:
         """Scan Waypoints
@@ -921,15 +846,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipWaypointScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipWaypointScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -942,17 +867,10 @@ class FleetApi:
     def create_ship_waypoint_scan_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[CreateShipWaypointScan201Response]:
         """Scan Waypoints
@@ -988,15 +906,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipWaypointScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipWaypointScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1009,17 +927,10 @@ class FleetApi:
     def create_ship_waypoint_scan_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Scan Waypoints
@@ -1055,15 +966,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateShipWaypointScan201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateShipWaypointScan201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -1079,21 +990,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -1101,22 +1012,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/scan/waypoints',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/scan/waypoints",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1126,7 +1037,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -1136,17 +1047,10 @@ class FleetApi:
     def create_survey(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> CreateSurvey201Response:
         """Create Survey
@@ -1182,15 +1086,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateSurvey201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateSurvey201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1203,17 +1107,10 @@ class FleetApi:
     def create_survey_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[CreateSurvey201Response]:
         """Create Survey
@@ -1249,15 +1146,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateSurvey201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateSurvey201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1270,17 +1167,10 @@ class FleetApi:
     def create_survey_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Create Survey
@@ -1316,15 +1206,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateSurvey201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "CreateSurvey201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -1340,21 +1230,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -1362,22 +1252,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/survey',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/survey",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1387,7 +1277,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -1397,17 +1287,10 @@ class FleetApi:
     def dock_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DockShip200Response:
         """Dock Ship
@@ -1443,15 +1326,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DockShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "DockShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1464,17 +1347,10 @@ class FleetApi:
     def dock_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DockShip200Response]:
         """Dock Ship
@@ -1510,15 +1386,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DockShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "DockShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1531,17 +1407,10 @@ class FleetApi:
     def dock_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Dock Ship
@@ -1577,15 +1446,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DockShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "DockShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -1601,21 +1470,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -1623,22 +1492,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/dock',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/dock",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1648,7 +1517,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -1658,17 +1527,10 @@ class FleetApi:
     def extract_resources(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ExtractResources201Response:
         """Extract Resources
@@ -1704,15 +1566,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ExtractResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ExtractResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1725,17 +1587,10 @@ class FleetApi:
     def extract_resources_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[ExtractResources201Response]:
         """Extract Resources
@@ -1771,15 +1626,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ExtractResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ExtractResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1792,17 +1647,10 @@ class FleetApi:
     def extract_resources_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Extract Resources
@@ -1838,15 +1686,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ExtractResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ExtractResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -1862,21 +1710,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -1884,22 +1732,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/extract',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/extract",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1909,7 +1757,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -1919,18 +1767,11 @@ class FleetApi:
     def extract_resources_with_survey(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        survey: Optional[Survey] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        survey: Survey | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ExtractResources201Response:
         """Extract Resources with Survey
@@ -1969,15 +1810,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ExtractResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ExtractResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -1990,18 +1831,11 @@ class FleetApi:
     def extract_resources_with_survey_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        survey: Optional[Survey] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        survey: Survey | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[ExtractResources201Response]:
         """Extract Resources with Survey
@@ -2040,15 +1874,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ExtractResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ExtractResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2061,18 +1895,11 @@ class FleetApi:
     def extract_resources_with_survey_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        survey: Optional[Survey] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        survey: Survey | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Extract Resources with Survey
@@ -2111,15 +1938,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ExtractResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ExtractResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -2136,21 +1963,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -2160,35 +1987,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/extract/survey',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/extract/survey",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2198,7 +2025,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -2208,17 +2035,10 @@ class FleetApi:
     def get_mounts(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetMounts200Response:
         """Get Mounts
@@ -2247,22 +2067,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_mounts_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMounts200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMounts200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2275,17 +2095,10 @@ class FleetApi:
     def get_mounts_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetMounts200Response]:
         """Get Mounts
@@ -2314,22 +2127,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_mounts_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMounts200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMounts200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2342,17 +2155,10 @@ class FleetApi:
     def get_mounts_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Mounts
@@ -2381,22 +2187,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_mounts_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMounts200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMounts200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -2412,21 +2218,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -2434,22 +2240,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/mounts',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/mounts",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2459,7 +2265,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -2469,17 +2275,10 @@ class FleetApi:
     def get_my_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetMyShip200Response:
         """Get Ship
@@ -2508,22 +2307,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2536,17 +2335,10 @@ class FleetApi:
     def get_my_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetMyShip200Response]:
         """Get Ship
@@ -2575,22 +2367,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2603,17 +2395,10 @@ class FleetApi:
     def get_my_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Ship
@@ -2642,22 +2427,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -2673,21 +2458,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -2695,22 +2480,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2720,7 +2505,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -2730,17 +2515,10 @@ class FleetApi:
     def get_my_ship_cargo(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetMyShipCargo200Response:
         """Get Ship Cargo
@@ -2769,22 +2547,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ship_cargo_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShipCargo200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShipCargo200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2797,17 +2575,10 @@ class FleetApi:
     def get_my_ship_cargo_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetMyShipCargo200Response]:
         """Get Ship Cargo
@@ -2836,22 +2607,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ship_cargo_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShipCargo200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShipCargo200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -2864,17 +2635,10 @@ class FleetApi:
     def get_my_ship_cargo_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Ship Cargo
@@ -2903,22 +2667,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ship_cargo_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShipCargo200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShipCargo200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -2934,21 +2698,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -2956,22 +2720,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/cargo',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/cargo",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2981,7 +2745,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -2990,19 +2754,12 @@ class FleetApi:
     @validate_call
     def get_my_ships(
         self,
-        page: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="What entry offset to request")] = None,
-        limit: Annotated[Optional[Annotated[int, Field(le=20, strict=True, ge=1)]], Field(description="How many entries to return per page")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        page: Annotated[Annotated[int, Field(strict=True, ge=1)] | None, Field(description="What entry offset to request")] = None,
+        limit: Annotated[Annotated[int, Field(le=20, strict=True, ge=1)] | None, Field(description="How many entries to return per page")] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetMyShips200Response:
         """List Ships
@@ -3033,7 +2790,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ships_serialize(
             page=page,
@@ -3041,15 +2798,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShips200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShips200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3061,19 +2818,12 @@ class FleetApi:
     @validate_call
     def get_my_ships_with_http_info(
         self,
-        page: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="What entry offset to request")] = None,
-        limit: Annotated[Optional[Annotated[int, Field(le=20, strict=True, ge=1)]], Field(description="How many entries to return per page")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        page: Annotated[Annotated[int, Field(strict=True, ge=1)] | None, Field(description="What entry offset to request")] = None,
+        limit: Annotated[Annotated[int, Field(le=20, strict=True, ge=1)] | None, Field(description="How many entries to return per page")] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetMyShips200Response]:
         """List Ships
@@ -3104,7 +2854,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ships_serialize(
             page=page,
@@ -3112,15 +2862,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShips200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShips200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3132,19 +2882,12 @@ class FleetApi:
     @validate_call
     def get_my_ships_without_preload_content(
         self,
-        page: Annotated[Optional[Annotated[int, Field(strict=True, ge=1)]], Field(description="What entry offset to request")] = None,
-        limit: Annotated[Optional[Annotated[int, Field(le=20, strict=True, ge=1)]], Field(description="How many entries to return per page")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        page: Annotated[Annotated[int, Field(strict=True, ge=1)] | None, Field(description="What entry offset to request")] = None,
+        limit: Annotated[Annotated[int, Field(le=20, strict=True, ge=1)] | None, Field(description="How many entries to return per page")] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """List Ships
@@ -3175,7 +2918,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_my_ships_serialize(
             page=page,
@@ -3183,15 +2926,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetMyShips200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetMyShips200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -3208,50 +2951,50 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         # process the query parameters
         if page is not None:
-            
-            _query_params.append(('page', page))
-            
+
+            _query_params.append(("page", page))
+
         if limit is not None:
-            
-            _query_params.append(('limit', limit))
-            
+
+            _query_params.append(("limit", limit))
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships',
+            method="GET",
+            resource_path="/my/ships",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3261,7 +3004,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -3271,17 +3014,10 @@ class FleetApi:
     def get_repair_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetRepairShip200Response:
         """Get Repair Ship
@@ -3310,22 +3046,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_repair_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetRepairShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetRepairShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3338,17 +3074,10 @@ class FleetApi:
     def get_repair_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetRepairShip200Response]:
         """Get Repair Ship
@@ -3377,22 +3106,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_repair_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetRepairShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetRepairShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3405,17 +3134,10 @@ class FleetApi:
     def get_repair_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Repair Ship
@@ -3444,22 +3166,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_repair_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetRepairShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetRepairShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -3475,21 +3197,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -3497,22 +3219,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/repair',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/repair",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3522,7 +3244,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -3532,17 +3254,10 @@ class FleetApi:
     def get_scrap_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetScrapShip200Response:
         """Get Scrap Ship
@@ -3571,22 +3286,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_scrap_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetScrapShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetScrapShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3599,17 +3314,10 @@ class FleetApi:
     def get_scrap_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetScrapShip200Response]:
         """Get Scrap Ship
@@ -3638,22 +3346,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_scrap_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetScrapShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetScrapShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3666,17 +3374,10 @@ class FleetApi:
     def get_scrap_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Scrap Ship
@@ -3705,22 +3406,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_scrap_ship_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetScrapShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetScrapShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -3736,21 +3437,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -3758,22 +3459,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/scrap',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/scrap",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3783,7 +3484,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -3793,17 +3494,10 @@ class FleetApi:
     def get_ship_cooldown(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetShipCooldown200Response:
         """Get Ship Cooldown
@@ -3839,16 +3533,16 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipCooldown200Response",
-            '204': "object",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipCooldown200Response",
+            "204": "object",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3861,17 +3555,10 @@ class FleetApi:
     def get_ship_cooldown_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetShipCooldown200Response]:
         """Get Ship Cooldown
@@ -3907,16 +3594,16 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipCooldown200Response",
-            '204': "object",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipCooldown200Response",
+            "204": "object",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -3929,17 +3616,10 @@ class FleetApi:
     def get_ship_cooldown_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Ship Cooldown
@@ -3975,16 +3655,16 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipCooldown200Response",
-            '204': "object",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipCooldown200Response",
+            "204": "object",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -4000,21 +3680,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -4022,22 +3702,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/cooldown',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/cooldown",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4047,7 +3727,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -4057,17 +3737,10 @@ class FleetApi:
     def get_ship_modules(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetShipModules200Response:
         """Get Ship Modules
@@ -4096,22 +3769,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_ship_modules_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipModules200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipModules200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4124,17 +3797,10 @@ class FleetApi:
     def get_ship_modules_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetShipModules200Response]:
         """Get Ship Modules
@@ -4163,22 +3829,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_ship_modules_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipModules200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipModules200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4191,17 +3857,10 @@ class FleetApi:
     def get_ship_modules_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Ship Modules
@@ -4230,22 +3889,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_ship_modules_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipModules200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipModules200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -4261,21 +3920,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -4283,22 +3942,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/modules',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/modules",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4308,7 +3967,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -4318,17 +3977,10 @@ class FleetApi:
     def get_ship_nav(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetShipNav200Response:
         """Get Ship Nav
@@ -4357,22 +4009,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_ship_nav_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipNav200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipNav200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4385,17 +4037,10 @@ class FleetApi:
     def get_ship_nav_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GetShipNav200Response]:
         """Get Ship Nav
@@ -4424,22 +4069,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_ship_nav_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipNav200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipNav200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4452,17 +4097,10 @@ class FleetApi:
     def get_ship_nav_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Get Ship Nav
@@ -4491,22 +4129,22 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._get_ship_nav_serialize(
             ship_symbol=ship_symbol,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "GetShipNav200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "GetShipNav200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -4522,21 +4160,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -4544,22 +4182,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/my/ships/{shipSymbol}/nav',
+            method="GET",
+            resource_path="/my/ships/{shipSymbol}/nav",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4569,7 +4207,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -4580,17 +4218,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         install_mount_request: InstallMountRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> InstallMount201Response:
         """Install Mount
@@ -4629,15 +4260,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "InstallMount201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "InstallMount201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4651,17 +4282,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         install_mount_request: InstallMountRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[InstallMount201Response]:
         """Install Mount
@@ -4700,15 +4324,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "InstallMount201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "InstallMount201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4722,17 +4346,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         install_mount_request: InstallMountRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Install Mount
@@ -4771,15 +4388,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "InstallMount201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "InstallMount201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -4796,21 +4413,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -4820,35 +4437,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/mounts/install',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/mounts/install",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4858,7 +4475,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -4869,17 +4486,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         install_ship_module_request: InstallShipModuleRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> InstallShipModule201Response:
         """Install Ship Module
@@ -4910,7 +4520,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._install_ship_module_serialize(
             ship_symbol=ship_symbol,
@@ -4918,15 +4528,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "InstallShipModule201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "InstallShipModule201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -4940,17 +4550,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         install_ship_module_request: InstallShipModuleRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[InstallShipModule201Response]:
         """Install Ship Module
@@ -4981,7 +4584,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._install_ship_module_serialize(
             ship_symbol=ship_symbol,
@@ -4989,15 +4592,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "InstallShipModule201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "InstallShipModule201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5011,17 +4614,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         install_ship_module_request: InstallShipModuleRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Install Ship Module
@@ -5052,7 +4648,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._install_ship_module_serialize(
             ship_symbol=ship_symbol,
@@ -5060,15 +4656,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "InstallShipModule201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "InstallShipModule201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -5085,21 +4681,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -5109,35 +4705,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/modules/install',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/modules/install",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -5147,7 +4743,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -5158,17 +4754,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         jettison_request: JettisonRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> Jettison200Response:
         """Jettison Cargo
@@ -5199,7 +4788,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._jettison_serialize(
             ship_symbol=ship_symbol,
@@ -5207,15 +4796,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Jettison200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "Jettison200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5229,17 +4818,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         jettison_request: JettisonRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[Jettison200Response]:
         """Jettison Cargo
@@ -5270,7 +4852,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._jettison_serialize(
             ship_symbol=ship_symbol,
@@ -5278,15 +4860,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Jettison200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "Jettison200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5300,17 +4882,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         jettison_request: JettisonRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Jettison Cargo
@@ -5341,7 +4916,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._jettison_serialize(
             ship_symbol=ship_symbol,
@@ -5349,15 +4924,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Jettison200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "Jettison200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -5374,21 +4949,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -5398,35 +4973,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/jettison',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/jettison",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -5436,7 +5011,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -5447,17 +5022,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         jump_ship_request: JumpShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> JumpShip200Response:
         """Jump Ship
@@ -5496,15 +5064,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "JumpShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "JumpShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5518,17 +5086,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         jump_ship_request: JumpShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[JumpShip200Response]:
         """Jump Ship
@@ -5567,15 +5128,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "JumpShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "JumpShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5589,17 +5150,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         jump_ship_request: JumpShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Jump Ship
@@ -5638,15 +5192,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "JumpShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "JumpShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -5663,21 +5217,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -5687,35 +5241,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/jump',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/jump",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -5725,7 +5279,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -5736,17 +5290,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         navigate_ship_request: NavigateShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> NavigateShip200Response:
         """Navigate Ship
@@ -5785,15 +5332,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "NavigateShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "NavigateShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5807,17 +5354,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         navigate_ship_request: NavigateShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[NavigateShip200Response]:
         """Navigate Ship
@@ -5856,15 +5396,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "NavigateShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "NavigateShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -5878,17 +5418,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         navigate_ship_request: NavigateShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Navigate Ship
@@ -5927,15 +5460,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "NavigateShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "NavigateShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -5952,21 +5485,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -5976,35 +5509,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/navigate',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/navigate",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -6014,7 +5547,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -6024,17 +5557,10 @@ class FleetApi:
     def negotiate_contract(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> NegotiateContract201Response:
         """Negotiate Contract
@@ -6070,15 +5596,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "NegotiateContract201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "NegotiateContract201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6091,17 +5617,10 @@ class FleetApi:
     def negotiate_contract_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[NegotiateContract201Response]:
         """Negotiate Contract
@@ -6137,15 +5656,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "NegotiateContract201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "NegotiateContract201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6158,17 +5677,10 @@ class FleetApi:
     def negotiate_contract_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Negotiate Contract
@@ -6204,15 +5716,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "NegotiateContract201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "NegotiateContract201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -6228,21 +5740,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -6250,22 +5762,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/negotiate/contract',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/negotiate/contract",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -6275,7 +5787,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -6285,17 +5797,10 @@ class FleetApi:
     def orbit_ship(
         self,
         ship_symbol: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> OrbitShip200Response:
         """Orbit Ship
@@ -6331,15 +5836,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OrbitShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "OrbitShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6352,17 +5857,10 @@ class FleetApi:
     def orbit_ship_with_http_info(
         self,
         ship_symbol: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[OrbitShip200Response]:
         """Orbit Ship
@@ -6398,15 +5896,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OrbitShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "OrbitShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6419,17 +5917,10 @@ class FleetApi:
     def orbit_ship_without_preload_content(
         self,
         ship_symbol: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Orbit Ship
@@ -6465,15 +5956,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OrbitShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "OrbitShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -6489,21 +5980,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -6511,22 +6002,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/orbit',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/orbit",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -6536,7 +6027,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -6546,18 +6037,11 @@ class FleetApi:
     def patch_ship_nav(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        patch_ship_nav_request: Optional[PatchShipNavRequest] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        patch_ship_nav_request: PatchShipNavRequest | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PatchShipNav200Response:
         """Patch Ship Nav
@@ -6596,15 +6080,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PatchShipNav200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "PatchShipNav200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6617,18 +6101,11 @@ class FleetApi:
     def patch_ship_nav_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        patch_ship_nav_request: Optional[PatchShipNavRequest] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        patch_ship_nav_request: PatchShipNavRequest | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PatchShipNav200Response]:
         """Patch Ship Nav
@@ -6667,15 +6144,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PatchShipNav200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "PatchShipNav200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6688,18 +6165,11 @@ class FleetApi:
     def patch_ship_nav_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        patch_ship_nav_request: Optional[PatchShipNavRequest] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        patch_ship_nav_request: PatchShipNavRequest | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Patch Ship Nav
@@ -6738,15 +6208,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PatchShipNav200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "PatchShipNav200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -6763,21 +6233,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -6787,35 +6257,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='PATCH',
-            resource_path='/my/ships/{shipSymbol}/nav',
+            method="PATCH",
+            resource_path="/my/ships/{shipSymbol}/nav",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -6825,7 +6295,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -6836,17 +6306,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         purchase_cargo_request: PurchaseCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PurchaseCargo201Response:
         """Purchase Cargo
@@ -6885,15 +6348,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "PurchaseCargo201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "PurchaseCargo201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6907,17 +6370,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         purchase_cargo_request: PurchaseCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PurchaseCargo201Response]:
         """Purchase Cargo
@@ -6956,15 +6412,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "PurchaseCargo201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "PurchaseCargo201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -6978,17 +6434,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         purchase_cargo_request: PurchaseCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Purchase Cargo
@@ -7027,15 +6476,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "PurchaseCargo201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "PurchaseCargo201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -7052,21 +6501,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -7076,35 +6525,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/purchase',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/purchase",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7114,7 +6563,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -7124,17 +6573,10 @@ class FleetApi:
     def purchase_ship(
         self,
         purchase_ship_request: PurchaseShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PurchaseShip201Response:
         """Purchase Ship
@@ -7170,15 +6612,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "PurchaseShip201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "PurchaseShip201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -7191,17 +6633,10 @@ class FleetApi:
     def purchase_ship_with_http_info(
         self,
         purchase_ship_request: PurchaseShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PurchaseShip201Response]:
         """Purchase Ship
@@ -7237,15 +6672,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "PurchaseShip201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "PurchaseShip201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -7258,17 +6693,10 @@ class FleetApi:
     def purchase_ship_without_preload_content(
         self,
         purchase_ship_request: PurchaseShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Purchase Ship
@@ -7304,15 +6732,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "PurchaseShip201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "PurchaseShip201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -7328,17 +6756,17 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         # process the query parameters
@@ -7350,35 +6778,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships',
+            method="POST",
+            resource_path="/my/ships",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7388,7 +6816,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -7398,18 +6826,11 @@ class FleetApi:
     def refuel_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        refuel_ship_request: Optional[RefuelShipRequest] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        refuel_ship_request: RefuelShipRequest | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RefuelShip200Response:
         """Refuel Ship
@@ -7448,15 +6869,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RefuelShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "RefuelShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -7469,18 +6890,11 @@ class FleetApi:
     def refuel_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        refuel_ship_request: Optional[RefuelShipRequest] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        refuel_ship_request: RefuelShipRequest | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[RefuelShip200Response]:
         """Refuel Ship
@@ -7519,15 +6933,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RefuelShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "RefuelShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -7540,18 +6954,11 @@ class FleetApi:
     def refuel_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        refuel_ship_request: Optional[RefuelShipRequest] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        refuel_ship_request: RefuelShipRequest | None = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Refuel Ship
@@ -7590,15 +6997,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RefuelShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "RefuelShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -7615,21 +7022,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -7639,36 +7046,36 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json', 
-                        'text/plain'
-                    ]
+                        "application/json",
+                        "text/plain",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/refuel',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/refuel",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7678,7 +7085,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -7689,17 +7096,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         remove_mount_request: RemoveMountRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RemoveMount201Response:
         """Remove Mount
@@ -7738,15 +7138,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RemoveMount201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "RemoveMount201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -7760,17 +7160,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         remove_mount_request: RemoveMountRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[RemoveMount201Response]:
         """Remove Mount
@@ -7809,15 +7202,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RemoveMount201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "RemoveMount201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -7831,17 +7224,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         remove_mount_request: RemoveMountRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Remove Mount
@@ -7880,15 +7266,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RemoveMount201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "RemoveMount201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -7905,21 +7291,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -7929,35 +7315,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/mounts/remove',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/mounts/remove",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7967,7 +7353,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -7978,17 +7364,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         remove_ship_module_request: RemoveShipModuleRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RemoveShipModule201Response:
         """Remove Ship Module
@@ -8019,7 +7398,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._remove_ship_module_serialize(
             ship_symbol=ship_symbol,
@@ -8027,15 +7406,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RemoveShipModule201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "RemoveShipModule201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8049,17 +7428,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         remove_ship_module_request: RemoveShipModuleRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[RemoveShipModule201Response]:
         """Remove Ship Module
@@ -8090,7 +7462,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._remove_ship_module_serialize(
             ship_symbol=ship_symbol,
@@ -8098,15 +7470,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RemoveShipModule201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "RemoveShipModule201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8120,17 +7492,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         remove_ship_module_request: RemoveShipModuleRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Remove Ship Module
@@ -8161,7 +7526,7 @@ class FleetApi:
                             in the spec for a single request.
         :type _host_index: int, optional
         :return: Returns the result object.
-        """ # noqa: E501
+        """
 
         _param = self._remove_ship_module_serialize(
             ship_symbol=ship_symbol,
@@ -8169,15 +7534,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RemoveShipModule201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "RemoveShipModule201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -8194,21 +7559,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -8218,35 +7583,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/modules/remove',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/modules/remove",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -8256,7 +7621,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -8266,17 +7631,10 @@ class FleetApi:
     def repair_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RepairShip200Response:
         """Repair Ship
@@ -8312,15 +7670,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RepairShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "RepairShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8333,17 +7691,10 @@ class FleetApi:
     def repair_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[RepairShip200Response]:
         """Repair Ship
@@ -8379,15 +7730,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RepairShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "RepairShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8400,17 +7751,10 @@ class FleetApi:
     def repair_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Repair Ship
@@ -8446,15 +7790,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RepairShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "RepairShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -8470,21 +7814,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -8492,22 +7836,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/repair',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/repair",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -8517,7 +7861,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -8527,17 +7871,10 @@ class FleetApi:
     def scrap_ship(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ScrapShip200Response:
         """Scrap Ship
@@ -8573,15 +7910,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ScrapShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "ScrapShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8594,17 +7931,10 @@ class FleetApi:
     def scrap_ship_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[ScrapShip200Response]:
         """Scrap Ship
@@ -8640,15 +7970,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ScrapShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "ScrapShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8661,17 +7991,10 @@ class FleetApi:
     def scrap_ship_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Scrap Ship
@@ -8707,15 +8030,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ScrapShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "ScrapShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -8731,21 +8054,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -8753,22 +8076,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/scrap',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/scrap",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -8778,7 +8101,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -8789,17 +8112,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         sell_cargo_request: SellCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> SellCargo201Response:
         """Sell Cargo
@@ -8838,15 +8154,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "SellCargo201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "SellCargo201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8860,17 +8176,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         sell_cargo_request: SellCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[SellCargo201Response]:
         """Sell Cargo
@@ -8909,15 +8218,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "SellCargo201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "SellCargo201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -8931,17 +8240,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         sell_cargo_request: SellCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Sell Cargo
@@ -8980,15 +8282,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "SellCargo201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "SellCargo201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -9005,21 +8307,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -9029,35 +8331,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/sell',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/sell",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -9067,7 +8369,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -9078,17 +8380,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         ship_refine_request: ShipRefineRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ShipRefine201Response:
         """Ship Refine
@@ -9127,15 +8422,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ShipRefine201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ShipRefine201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9149,17 +8444,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         ship_refine_request: ShipRefineRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[ShipRefine201Response]:
         """Ship Refine
@@ -9198,15 +8486,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ShipRefine201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ShipRefine201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9220,17 +8508,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         ship_refine_request: ShipRefineRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Ship Refine
@@ -9269,15 +8550,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "ShipRefine201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "ShipRefine201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -9294,21 +8575,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -9318,35 +8599,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/refine',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/refine",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -9356,7 +8637,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -9366,17 +8647,10 @@ class FleetApi:
     def siphon_resources(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> SiphonResources201Response:
         """Siphon Resources
@@ -9412,15 +8686,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "SiphonResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "SiphonResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9433,17 +8707,10 @@ class FleetApi:
     def siphon_resources_with_http_info(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[SiphonResources201Response]:
         """Siphon Resources
@@ -9479,15 +8746,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "SiphonResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "SiphonResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9500,17 +8767,10 @@ class FleetApi:
     def siphon_resources_without_preload_content(
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Siphon Resources
@@ -9546,15 +8806,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "SiphonResources201Response",
+        _response_types_map: dict[str, str | None] = {
+            "201": "SiphonResources201Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -9570,21 +8830,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -9592,22 +8852,22 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/siphon',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/siphon",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -9617,7 +8877,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -9628,17 +8888,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         transfer_cargo_request: TransferCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> TransferCargo200Response:
         """Transfer Cargo
@@ -9677,15 +8930,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransferCargo200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "TransferCargo200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9699,17 +8952,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         transfer_cargo_request: TransferCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[TransferCargo200Response]:
         """Transfer Cargo
@@ -9748,15 +8994,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransferCargo200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "TransferCargo200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9770,17 +9016,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         transfer_cargo_request: TransferCargoRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Transfer Cargo
@@ -9819,15 +9058,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransferCargo200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "TransferCargo200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -9844,21 +9083,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -9868,35 +9107,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/transfer',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/transfer",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -9906,7 +9145,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 
@@ -9917,17 +9156,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         navigate_ship_request: NavigateShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> NavigateShip200Response:
         """Warp Ship
@@ -9966,15 +9198,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "NavigateShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "NavigateShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -9988,17 +9220,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         navigate_ship_request: NavigateShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[NavigateShip200Response]:
         """Warp Ship
@@ -10037,15 +9262,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "NavigateShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "NavigateShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         response_data.read()
         return self.api_client.response_deserialize(
@@ -10059,17 +9284,10 @@ class FleetApi:
         self,
         ship_symbol: Annotated[StrictStr, Field(description="The symbol of the ship.")],
         navigate_ship_request: NavigateShipRequest,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _request_timeout: None | Annotated[StrictFloat, Field(gt=0)] | tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]] = None,
+        _request_auth: dict[StrictStr, Any] | None = None,
+        _content_type: StrictStr | None = None,
+        _headers: dict[StrictStr, Any] | None = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
         """Warp Ship
@@ -10108,15 +9326,15 @@ class FleetApi:
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
-            _host_index=_host_index
+            _host_index=_host_index,
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "NavigateShip200Response",
+        _response_types_map: dict[str, str | None] = {
+            "200": "NavigateShip200Response",
         }
         response_data = self.api_client.call_api(
             *_param,
-            _request_timeout=_request_timeout
+            _request_timeout=_request_timeout,
         )
         return response_data.response
 
@@ -10133,21 +9351,21 @@ class FleetApi:
 
         _host = None
 
-        _collection_formats: Dict[str, str] = {
+        _collection_formats: dict[str, str] = {
         }
 
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        _path_params: dict[str, str] = {}
+        _query_params: list[tuple[str, str]] = []
+        _header_params: dict[str, str | None] = _headers or {}
+        _form_params: list[tuple[str, str]] = []
+        _files: dict[
+            str, str | bytes | list[str] | list[bytes] | list[tuple[str, bytes]],
         ] = {}
-        _body_params: Optional[bytes] = None
+        _body_params: bytes | None = None
 
         # process the path parameters
         if ship_symbol is not None:
-            _path_params['shipSymbol'] = ship_symbol
+            _path_params["shipSymbol"] = ship_symbol
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -10157,35 +9375,35 @@ class FleetApi:
 
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
+        if "Accept" not in _header_params:
+            _header_params["Accept"] = self.api_client.select_header_accept(
                 [
-                    'application/json'
-                ]
+                    "application/json",
+                ],
             )
 
         # set the HTTP header `Content-Type`
         if _content_type:
-            _header_params['Content-Type'] = _content_type
+            _header_params["Content-Type"] = _content_type
         else:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
-                    ]
+                        "application/json",
+                    ],
                 )
             )
             if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'AgentToken'
+        _auth_settings: list[str] = [
+            "AgentToken",
         ]
 
         return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/my/ships/{shipSymbol}/warp',
+            method="POST",
+            resource_path="/my/ships/{shipSymbol}/warp",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -10195,7 +9413,7 @@ class FleetApi:
             auth_settings=_auth_settings,
             collection_formats=_collection_formats,
             _host=_host,
-            _request_auth=_request_auth
+            _request_auth=_request_auth,
         )
 
 

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,24 +13,23 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class RefuelShipRequest(BaseModel):
     """
     RefuelShipRequest
-    """ # noqa: E501
-    units: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, description="The amount of fuel to fill in the ship's tanks. When not specified, the ship will be refueled to its maximum fuel capacity. If the amount specified is greater than the ship's remaining capacity, the ship will only be refueled to its maximum fuel capacity. The amount specified is not in market units but in ship fuel units.")
-    from_cargo: Optional[StrictBool] = Field(default=None, alias="fromCargo")
-    __properties: ClassVar[List[str]] = ["units", "fromCargo"]
+    """
+    units: Annotated[int, Field(strict=True, ge=1)] | None = Field(default=None, description="The amount of fuel to fill in the ship's tanks. When not specified, the ship will be refueled to its maximum fuel capacity. If the amount specified is greater than the ship's remaining capacity, the ship will only be refueled to its maximum fuel capacity. The amount specified is not in market units but in ship fuel units.")
+    from_cargo: StrictBool | None = Field(default=None, alias="fromCargo")
+    __properties: ClassVar[list[str]] = ["units", "fromCargo"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,11 +48,11 @@ class RefuelShipRequest(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of RefuelShipRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -64,7 +62,7 @@ class RefuelShipRequest(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -75,12 +73,12 @@ class RefuelShipRequest(BaseModel):
         # set to None if from_cargo (nullable) is None
         # and model_fields_set contains the field
         if self.from_cargo is None and "from_cargo" in self.model_fields_set:
-            _dict['fromCargo'] = None
+            _dict["fromCargo"] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of RefuelShipRequest from a dict"""
         if obj is None:
             return None
@@ -90,7 +88,7 @@ class RefuelShipRequest(BaseModel):
 
         _obj = cls.model_validate({
             "units": obj.get("units"),
-            "fromCargo": obj.get("fromCargo")
+            "fromCargo": obj.get("fromCargo"),
         })
         return _obj
 

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,37 +13,37 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class ShipConditionEvent(BaseModel):
     """
     An event that represents damage or wear to a ship's reactor, frame, or engine, reducing the condition of the ship.
-    """ # noqa: E501
+    """
     symbol: StrictStr = Field(description="The symbol of the event that occurred.")
     component: StrictStr
     name: StrictStr = Field(description="The name of the event.")
     description: StrictStr = Field(description="A description of the event.")
-    __properties: ClassVar[List[str]] = ["symbol", "component", "name", "description"]
+    __properties: ClassVar[list[str]] = ["symbol", "component", "name", "description"]
 
-    @field_validator('symbol')
+    @field_validator("symbol")
     def symbol_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['REACTOR_OVERLOAD', 'ENERGY_SPIKE_FROM_MINERAL', 'SOLAR_FLARE_INTERFERENCE', 'COOLANT_LEAK', 'POWER_DISTRIBUTION_FLUCTUATION', 'MAGNETIC_FIELD_DISRUPTION', 'HULL_MICROMETEORITE_STRIKES', 'STRUCTURAL_STRESS_FRACTURES', 'CORROSIVE_MINERAL_CONTAMINATION', 'THERMAL_EXPANSION_MISMATCH', 'VIBRATION_DAMAGE_FROM_DRILLING', 'ELECTROMAGNETIC_FIELD_INTERFERENCE', 'IMPACT_WITH_EXTRACTED_DEBRIS', 'FUEL_EFFICIENCY_DEGRADATION', 'COOLANT_SYSTEM_AGEING', 'DUST_MICROABRASIONS', 'THRUSTER_NOZZLE_WEAR', 'EXHAUST_PORT_CLOGGING', 'BEARING_LUBRICATION_FADE', 'SENSOR_CALIBRATION_DRIFT', 'HULL_MICROMETEORITE_DAMAGE', 'SPACE_DEBRIS_COLLISION', 'THERMAL_STRESS', 'VIBRATION_OVERLOAD', 'PRESSURE_DIFFERENTIAL_STRESS', 'ELECTROMAGNETIC_SURGE_EFFECTS', 'ATMOSPHERIC_ENTRY_HEAT']):
+        if value not in set(["REACTOR_OVERLOAD", "ENERGY_SPIKE_FROM_MINERAL", "SOLAR_FLARE_INTERFERENCE", "COOLANT_LEAK", "POWER_DISTRIBUTION_FLUCTUATION", "MAGNETIC_FIELD_DISRUPTION", "HULL_MICROMETEORITE_STRIKES", "STRUCTURAL_STRESS_FRACTURES", "CORROSIVE_MINERAL_CONTAMINATION", "THERMAL_EXPANSION_MISMATCH", "VIBRATION_DAMAGE_FROM_DRILLING", "ELECTROMAGNETIC_FIELD_INTERFERENCE", "IMPACT_WITH_EXTRACTED_DEBRIS", "FUEL_EFFICIENCY_DEGRADATION", "COOLANT_SYSTEM_AGEING", "DUST_MICROABRASIONS", "THRUSTER_NOZZLE_WEAR", "EXHAUST_PORT_CLOGGING", "BEARING_LUBRICATION_FADE", "SENSOR_CALIBRATION_DRIFT", "HULL_MICROMETEORITE_DAMAGE", "SPACE_DEBRIS_COLLISION", "THERMAL_STRESS", "VIBRATION_OVERLOAD", "PRESSURE_DIFFERENTIAL_STRESS", "ELECTROMAGNETIC_SURGE_EFFECTS", "ATMOSPHERIC_ENTRY_HEAT"]):
             raise ValueError("must be one of enum values ('REACTOR_OVERLOAD', 'ENERGY_SPIKE_FROM_MINERAL', 'SOLAR_FLARE_INTERFERENCE', 'COOLANT_LEAK', 'POWER_DISTRIBUTION_FLUCTUATION', 'MAGNETIC_FIELD_DISRUPTION', 'HULL_MICROMETEORITE_STRIKES', 'STRUCTURAL_STRESS_FRACTURES', 'CORROSIVE_MINERAL_CONTAMINATION', 'THERMAL_EXPANSION_MISMATCH', 'VIBRATION_DAMAGE_FROM_DRILLING', 'ELECTROMAGNETIC_FIELD_INTERFERENCE', 'IMPACT_WITH_EXTRACTED_DEBRIS', 'FUEL_EFFICIENCY_DEGRADATION', 'COOLANT_SYSTEM_AGEING', 'DUST_MICROABRASIONS', 'THRUSTER_NOZZLE_WEAR', 'EXHAUST_PORT_CLOGGING', 'BEARING_LUBRICATION_FADE', 'SENSOR_CALIBRATION_DRIFT', 'HULL_MICROMETEORITE_DAMAGE', 'SPACE_DEBRIS_COLLISION', 'THERMAL_STRESS', 'VIBRATION_OVERLOAD', 'PRESSURE_DIFFERENTIAL_STRESS', 'ELECTROMAGNETIC_SURGE_EFFECTS', 'ATMOSPHERIC_ENTRY_HEAT')")
         return value
 
-    @field_validator('component')
+    @field_validator("component")
     def component_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['FRAME', 'REACTOR', 'ENGINE']):
+        if value not in set(["FRAME", "REACTOR", "ENGINE"]):
             raise ValueError("must be one of enum values ('FRAME', 'REACTOR', 'ENGINE')")
         return value
 
@@ -65,11 +64,11 @@ class ShipConditionEvent(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipConditionEvent from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -79,7 +78,7 @@ class ShipConditionEvent(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -90,7 +89,7 @@ class ShipConditionEvent(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipConditionEvent from a dict"""
         if obj is None:
             return None
@@ -102,7 +101,7 @@ class ShipConditionEvent(BaseModel):
             "symbol": obj.get("symbol"),
             "component": obj.get("component"),
             "name": obj.get("name"),
-            "description": obj.get("description")
+            "description": obj.get("description"),
         })
         return _obj
 

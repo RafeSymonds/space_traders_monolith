@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,23 +13,24 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
-from space_traders_api.models.scrap_ship200_response_data import ScrapShip200ResponseData
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.scrap_ship200_response_data import ScrapShip200ResponseData
+
 
 class ScrapShip200Response(BaseModel):
     """
     Ship scrapped successfully.
-    """ # noqa: E501
+    """
     data: ScrapShip200ResponseData
-    __properties: ClassVar[List[str]] = ["data"]
+    __properties: ClassVar[list[str]] = ["data"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -49,11 +49,11 @@ class ScrapShip200Response(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ScrapShip200Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -63,7 +63,7 @@ class ScrapShip200Response(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -73,11 +73,11 @@ class ScrapShip200Response(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of data
         if self.data:
-            _dict['data'] = self.data.to_dict()
+            _dict["data"] = self.data.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ScrapShip200Response from a dict"""
         if obj is None:
             return None
@@ -86,7 +86,7 @@ class ScrapShip200Response(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "data": ScrapShip200ResponseData.from_dict(obj["data"]) if obj.get("data") is not None else None
+            "data": ScrapShip200ResponseData.from_dict(obj["data"]) if obj.get("data") is not None else None,
         })
         return _obj
 

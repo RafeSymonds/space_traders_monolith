@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,17 +13,17 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Union
-from typing_extensions import Annotated
-from space_traders_api.models.ship_requirements import ShipRequirements
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.ship_requirements import ShipRequirements
+
 
 class ShipFrame(BaseModel):
     """
@@ -32,20 +31,20 @@ class ShipFrame(BaseModel):
     """ # noqa: E501
     symbol: StrictStr = Field(description="Symbol of the frame.")
     name: StrictStr = Field(description="Name of the frame.")
-    condition: Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]] = Field(description="The repairable condition of a component. A value of 0 indicates the component needs significant repairs, while a value of 1 indicates the component is in near perfect condition. As the condition of a component is repaired, the overall integrity of the component decreases.")
-    integrity: Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]] = Field(description="The overall integrity of the component, which determines the performance of the component. A value of 0 indicates that the component is almost completely degraded, while a value of 1 indicates that the component is in near perfect condition. The integrity of the component is non-repairable, and represents permanent wear over time.")
+    condition: Annotated[float, Field(le=1, strict=True, ge=0)] | Annotated[int, Field(le=1, strict=True, ge=0)] = Field(description="The repairable condition of a component. A value of 0 indicates the component needs significant repairs, while a value of 1 indicates the component is in near perfect condition. As the condition of a component is repaired, the overall integrity of the component decreases.")
+    integrity: Annotated[float, Field(le=1, strict=True, ge=0)] | Annotated[int, Field(le=1, strict=True, ge=0)] = Field(description="The overall integrity of the component, which determines the performance of the component. A value of 0 indicates that the component is almost completely degraded, while a value of 1 indicates that the component is in near perfect condition. The integrity of the component is non-repairable, and represents permanent wear over time.")
     description: StrictStr = Field(description="Description of the frame.")
     module_slots: Annotated[int, Field(strict=True, ge=0)] = Field(description="The amount of slots that can be dedicated to modules installed in the ship. Each installed module take up a number of slots, and once there are no more slots, no new modules can be installed.", alias="moduleSlots")
     mounting_points: Annotated[int, Field(strict=True, ge=0)] = Field(description="The amount of slots that can be dedicated to mounts installed in the ship. Each installed mount takes up a number of points, and once there are no more points remaining, no new mounts can be installed.", alias="mountingPoints")
     fuel_capacity: Annotated[int, Field(strict=True, ge=0)] = Field(description="The maximum amount of fuel that can be stored in this ship. When refueling, the ship will be refueled to this amount.", alias="fuelCapacity")
     requirements: ShipRequirements
-    quality: Union[StrictFloat, StrictInt] = Field(description="The overall quality of the component, which determines the quality of the component. High quality components return more ships parts and ship plating when a ship is scrapped. But also require more of these parts to repair. This is transparent to the player, as the parts are bought from/sold to the marketplace.")
-    __properties: ClassVar[List[str]] = ["symbol", "name", "condition", "integrity", "description", "moduleSlots", "mountingPoints", "fuelCapacity", "requirements", "quality"]
+    quality: StrictFloat | StrictInt = Field(description="The overall quality of the component, which determines the quality of the component. High quality components return more ships parts and ship plating when a ship is scrapped. But also require more of these parts to repair. This is transparent to the player, as the parts are bought from/sold to the marketplace.")
+    __properties: ClassVar[list[str]] = ["symbol", "name", "condition", "integrity", "description", "moduleSlots", "mountingPoints", "fuelCapacity", "requirements", "quality"]
 
-    @field_validator('symbol')
+    @field_validator("symbol")
     def symbol_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['FRAME_PROBE', 'FRAME_DRONE', 'FRAME_INTERCEPTOR', 'FRAME_RACER', 'FRAME_FIGHTER', 'FRAME_FRIGATE', 'FRAME_SHUTTLE', 'FRAME_EXPLORER', 'FRAME_MINER', 'FRAME_LIGHT_FREIGHTER', 'FRAME_HEAVY_FREIGHTER', 'FRAME_TRANSPORT', 'FRAME_DESTROYER', 'FRAME_CRUISER', 'FRAME_CARRIER', 'FRAME_BULK_FREIGHTER']):
+        if value not in set(["FRAME_PROBE", "FRAME_DRONE", "FRAME_INTERCEPTOR", "FRAME_RACER", "FRAME_FIGHTER", "FRAME_FRIGATE", "FRAME_SHUTTLE", "FRAME_EXPLORER", "FRAME_MINER", "FRAME_LIGHT_FREIGHTER", "FRAME_HEAVY_FREIGHTER", "FRAME_TRANSPORT", "FRAME_DESTROYER", "FRAME_CRUISER", "FRAME_CARRIER", "FRAME_BULK_FREIGHTER"]):
             raise ValueError("must be one of enum values ('FRAME_PROBE', 'FRAME_DRONE', 'FRAME_INTERCEPTOR', 'FRAME_RACER', 'FRAME_FIGHTER', 'FRAME_FRIGATE', 'FRAME_SHUTTLE', 'FRAME_EXPLORER', 'FRAME_MINER', 'FRAME_LIGHT_FREIGHTER', 'FRAME_HEAVY_FREIGHTER', 'FRAME_TRANSPORT', 'FRAME_DESTROYER', 'FRAME_CRUISER', 'FRAME_CARRIER', 'FRAME_BULK_FREIGHTER')")
         return value
 
@@ -66,11 +65,11 @@ class ShipFrame(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipFrame from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -80,7 +79,7 @@ class ShipFrame(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -90,11 +89,11 @@ class ShipFrame(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of requirements
         if self.requirements:
-            _dict['requirements'] = self.requirements.to_dict()
+            _dict["requirements"] = self.requirements.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipFrame from a dict"""
         if obj is None:
             return None
@@ -112,7 +111,7 @@ class ShipFrame(BaseModel):
             "mountingPoints": obj.get("mountingPoints"),
             "fuelCapacity": obj.get("fuelCapacity"),
             "requirements": ShipRequirements.from_dict(obj["requirements"]) if obj.get("requirements") is not None else None,
-            "quality": obj.get("quality")
+            "quality": obj.get("quality"),
         })
         return _obj
 

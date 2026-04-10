@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,36 +13,36 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Union
-from typing_extensions import Annotated
-from space_traders_api.models.ship_requirements import ShipRequirements
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.ship_requirements import ShipRequirements
+
 
 class ShipReactor(BaseModel):
     """
     The reactor of the ship. The reactor is responsible for powering the ship's systems and weapons.
-    """ # noqa: E501
+    """
     symbol: StrictStr = Field(description="Symbol of the reactor.")
     name: StrictStr = Field(description="Name of the reactor.")
-    condition: Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]] = Field(description="The repairable condition of a component. A value of 0 indicates the component needs significant repairs, while a value of 1 indicates the component is in near perfect condition. As the condition of a component is repaired, the overall integrity of the component decreases.")
-    integrity: Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]] = Field(description="The overall integrity of the component, which determines the performance of the component. A value of 0 indicates that the component is almost completely degraded, while a value of 1 indicates that the component is in near perfect condition. The integrity of the component is non-repairable, and represents permanent wear over time.")
+    condition: Annotated[float, Field(le=1, strict=True, ge=0)] | Annotated[int, Field(le=1, strict=True, ge=0)] = Field(description="The repairable condition of a component. A value of 0 indicates the component needs significant repairs, while a value of 1 indicates the component is in near perfect condition. As the condition of a component is repaired, the overall integrity of the component decreases.")
+    integrity: Annotated[float, Field(le=1, strict=True, ge=0)] | Annotated[int, Field(le=1, strict=True, ge=0)] = Field(description="The overall integrity of the component, which determines the performance of the component. A value of 0 indicates that the component is almost completely degraded, while a value of 1 indicates that the component is in near perfect condition. The integrity of the component is non-repairable, and represents permanent wear over time.")
     description: StrictStr = Field(description="Description of the reactor.")
     power_output: Annotated[int, Field(strict=True, ge=1)] = Field(description="The amount of power provided by this reactor. The more power a reactor provides to the ship, the lower the cooldown it gets when using a module or mount that taxes the ship's power.", alias="powerOutput")
     requirements: ShipRequirements
-    quality: Union[StrictFloat, StrictInt] = Field(description="The overall quality of the component, which determines the quality of the component. High quality components return more ships parts and ship plating when a ship is scrapped. But also require more of these parts to repair. This is transparent to the player, as the parts are bought from/sold to the marketplace.")
-    __properties: ClassVar[List[str]] = ["symbol", "name", "condition", "integrity", "description", "powerOutput", "requirements", "quality"]
+    quality: StrictFloat | StrictInt = Field(description="The overall quality of the component, which determines the quality of the component. High quality components return more ships parts and ship plating when a ship is scrapped. But also require more of these parts to repair. This is transparent to the player, as the parts are bought from/sold to the marketplace.")
+    __properties: ClassVar[list[str]] = ["symbol", "name", "condition", "integrity", "description", "powerOutput", "requirements", "quality"]
 
-    @field_validator('symbol')
+    @field_validator("symbol")
     def symbol_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['REACTOR_SOLAR_I', 'REACTOR_FUSION_I', 'REACTOR_FISSION_I', 'REACTOR_CHEMICAL_I', 'REACTOR_ANTIMATTER_I']):
+        if value not in set(["REACTOR_SOLAR_I", "REACTOR_FUSION_I", "REACTOR_FISSION_I", "REACTOR_CHEMICAL_I", "REACTOR_ANTIMATTER_I"]):
             raise ValueError("must be one of enum values ('REACTOR_SOLAR_I', 'REACTOR_FUSION_I', 'REACTOR_FISSION_I', 'REACTOR_CHEMICAL_I', 'REACTOR_ANTIMATTER_I')")
         return value
 
@@ -64,11 +63,11 @@ class ShipReactor(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipReactor from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -78,7 +77,7 @@ class ShipReactor(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -88,11 +87,11 @@ class ShipReactor(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of requirements
         if self.requirements:
-            _dict['requirements'] = self.requirements.to_dict()
+            _dict["requirements"] = self.requirements.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipReactor from a dict"""
         if obj is None:
             return None
@@ -108,7 +107,7 @@ class ShipReactor(BaseModel):
             "description": obj.get("description"),
             "powerOutput": obj.get("powerOutput"),
             "requirements": ShipRequirements.from_dict(obj["requirements"]) if obj.get("requirements") is not None else None,
-            "quality": obj.get("quality")
+            "quality": obj.get("quality"),
         })
         return _obj
 

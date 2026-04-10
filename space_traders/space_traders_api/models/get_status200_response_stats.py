@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,26 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class GetStatus200ResponseStats(BaseModel):
     """
     GetStatus200ResponseStats
-    """ # noqa: E501
-    accounts: Optional[StrictInt] = Field(default=None, description="Total number of accounts registered on the game server.")
+    """
+    accounts: StrictInt | None = Field(default=None, description="Total number of accounts registered on the game server.")
     agents: StrictInt = Field(description="Number of registered agents in the game.")
     ships: StrictInt = Field(description="Total number of ships in the game.")
     systems: StrictInt = Field(description="Total number of systems in the game.")
     waypoints: StrictInt = Field(description="Total number of waypoints in the game.")
-    __properties: ClassVar[List[str]] = ["accounts", "agents", "ships", "systems", "waypoints"]
+    __properties: ClassVar[list[str]] = ["accounts", "agents", "ships", "systems", "waypoints"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -52,11 +51,11 @@ class GetStatus200ResponseStats(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of GetStatus200ResponseStats from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -66,7 +65,7 @@ class GetStatus200ResponseStats(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -77,7 +76,7 @@ class GetStatus200ResponseStats(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of GetStatus200ResponseStats from a dict"""
         if obj is None:
             return None
@@ -90,7 +89,7 @@ class GetStatus200ResponseStats(BaseModel):
             "agents": obj.get("agents"),
             "ships": obj.get("ships"),
             "systems": obj.get("systems"),
-            "waypoints": obj.get("waypoints")
+            "waypoints": obj.get("waypoints"),
         })
         return _obj
 

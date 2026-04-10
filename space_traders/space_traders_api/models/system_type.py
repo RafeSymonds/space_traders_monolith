@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class SystemType(str, Enum):
@@ -27,16 +27,16 @@ class SystemType(str, Enum):
     """
     allowed enum values
     """
-    NEUTRON_STAR = 'NEUTRON_STAR'
-    RED_STAR = 'RED_STAR'
-    ORANGE_STAR = 'ORANGE_STAR'
-    BLUE_STAR = 'BLUE_STAR'
-    YOUNG_STAR = 'YOUNG_STAR'
-    WHITE_DWARF = 'WHITE_DWARF'
-    BLACK_HOLE = 'BLACK_HOLE'
-    HYPERGIANT = 'HYPERGIANT'
-    NEBULA = 'NEBULA'
-    UNSTABLE = 'UNSTABLE'
+    NEUTRON_STAR = "NEUTRON_STAR"
+    RED_STAR = "RED_STAR"
+    ORANGE_STAR = "ORANGE_STAR"
+    BLUE_STAR = "BLUE_STAR"
+    YOUNG_STAR = "YOUNG_STAR"
+    WHITE_DWARF = "WHITE_DWARF"
+    BLACK_HOLE = "BLACK_HOLE"
+    HYPERGIANT = "HYPERGIANT"
+    NEBULA = "NEBULA"
+    UNSTABLE = "UNSTABLE"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

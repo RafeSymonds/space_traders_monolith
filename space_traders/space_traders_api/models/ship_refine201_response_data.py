@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,28 +13,29 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.cooldown import Cooldown
 from space_traders_api.models.ship_cargo import ShipCargo
 from space_traders_api.models.ship_refine201_response_data_produced_inner import ShipRefine201ResponseDataProducedInner
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class ShipRefine201ResponseData(BaseModel):
     """
     ShipRefine201ResponseData
-    """ # noqa: E501
+    """
     cargo: ShipCargo
     cooldown: Cooldown
-    produced: List[ShipRefine201ResponseDataProducedInner] = Field(description="Goods that were produced by this refining process.")
-    consumed: List[ShipRefine201ResponseDataProducedInner] = Field(description="Goods that were consumed during this refining process.")
-    __properties: ClassVar[List[str]] = ["cargo", "cooldown", "produced", "consumed"]
+    produced: list[ShipRefine201ResponseDataProducedInner] = Field(description="Goods that were produced by this refining process.")
+    consumed: list[ShipRefine201ResponseDataProducedInner] = Field(description="Goods that were consumed during this refining process.")
+    __properties: ClassVar[list[str]] = ["cargo", "cooldown", "produced", "consumed"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,11 +54,11 @@ class ShipRefine201ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipRefine201ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -68,7 +68,7 @@ class ShipRefine201ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -78,28 +78,28 @@ class ShipRefine201ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of cargo
         if self.cargo:
-            _dict['cargo'] = self.cargo.to_dict()
+            _dict["cargo"] = self.cargo.to_dict()
         # override the default output from pydantic by calling `to_dict()` of cooldown
         if self.cooldown:
-            _dict['cooldown'] = self.cooldown.to_dict()
+            _dict["cooldown"] = self.cooldown.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in produced (list)
         _items = []
         if self.produced:
             for _item_produced in self.produced:
                 if _item_produced:
                     _items.append(_item_produced.to_dict())
-            _dict['produced'] = _items
+            _dict["produced"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in consumed (list)
         _items = []
         if self.consumed:
             for _item_consumed in self.consumed:
                 if _item_consumed:
                     _items.append(_item_consumed.to_dict())
-            _dict['consumed'] = _items
+            _dict["consumed"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipRefine201ResponseData from a dict"""
         if obj is None:
             return None
@@ -111,7 +111,7 @@ class ShipRefine201ResponseData(BaseModel):
             "cargo": ShipCargo.from_dict(obj["cargo"]) if obj.get("cargo") is not None else None,
             "cooldown": Cooldown.from_dict(obj["cooldown"]) if obj.get("cooldown") is not None else None,
             "produced": [ShipRefine201ResponseDataProducedInner.from_dict(_item) for _item in obj["produced"]] if obj.get("produced") is not None else None,
-            "consumed": [ShipRefine201ResponseDataProducedInner.from_dict(_item) for _item in obj["consumed"]] if obj.get("consumed") is not None else None
+            "consumed": [ShipRefine201ResponseDataProducedInner.from_dict(_item) for _item in obj["consumed"]] if obj.get("consumed") is not None else None,
         })
         return _obj
 

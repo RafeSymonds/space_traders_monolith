@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,25 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from space_traders_api.models.trade_symbol import TradeSymbol
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.trade_symbol import TradeSymbol
+
 
 class JettisonRequest(BaseModel):
     """
     JettisonRequest
-    """ # noqa: E501
+    """
     symbol: TradeSymbol
     units: Annotated[int, Field(strict=True, ge=1)] = Field(description="Amount of units to jettison of this good.")
-    __properties: ClassVar[List[str]] = ["symbol", "units"]
+    __properties: ClassVar[list[str]] = ["symbol", "units"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +50,11 @@ class JettisonRequest(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of JettisonRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +64,7 @@ class JettisonRequest(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -76,7 +75,7 @@ class JettisonRequest(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of JettisonRequest from a dict"""
         if obj is None:
             return None
@@ -86,7 +85,7 @@ class JettisonRequest(BaseModel):
 
         _obj = cls.model_validate({
             "symbol": obj.get("symbol"),
-            "units": obj.get("units")
+            "units": obj.get("units"),
         })
         return _obj
 

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class ActivityLevel(str, Enum):
@@ -27,10 +27,10 @@ class ActivityLevel(str, Enum):
     """
     allowed enum values
     """
-    WEAK = 'WEAK'
-    GROWING = 'GROWING'
-    STRONG = 'STRONG'
-    RESTRICTED = 'RESTRICTED'
+    WEAK = "WEAK"
+    GROWING = "GROWING"
+    STRONG = "STRONG"
+    RESTRICTED = "RESTRICTED"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

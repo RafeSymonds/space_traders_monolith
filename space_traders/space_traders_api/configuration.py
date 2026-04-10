@@ -14,22 +14,20 @@
 import copy
 import http.client as httplib
 import logging
-from logging import FileHandler
 import multiprocessing
 import sys
-from typing import Any, ClassVar, Dict, List, Literal, Optional, TypedDict, Union
-from typing_extensions import NotRequired, Self
+from logging import FileHandler
+from typing import Any, ClassVar, Literal, NotRequired, Self, TypedDict
 
 import urllib3
 
-
 JSON_SCHEMA_VALIDATION_KEYWORDS = {
-    'multipleOf', 'maximum', 'exclusiveMaximum',
-    'minimum', 'exclusiveMinimum', 'maxLength',
-    'minLength', 'pattern', 'maxItems', 'minItems'
+    "multipleOf", "maximum", "exclusiveMaximum",
+    "minimum", "exclusiveMinimum", "maxLength",
+    "minLength", "pattern", "maxItems", "minItems",
 }
 
-ServerVariablesT = Dict[str, str]
+ServerVariablesT = dict[str, str]
 
 GenericAuthSetting = TypedDict(
     "GenericAuthSetting",
@@ -59,7 +57,7 @@ APIKeyAuthSetting = TypedDict(
         "type": Literal["api_key"],
         "in": str,
         "key": str,
-        "value": Optional[str],
+        "value": str | None,
     },
 )
 
@@ -70,7 +68,7 @@ BasicAuthSetting = TypedDict(
         "type": Literal["basic"],
         "in": Literal["header"],
         "key": Literal["Authorization"],
-        "value": Optional[str],
+        "value": str | None,
     },
 )
 
@@ -109,26 +107,21 @@ HTTPSignatureAuthSetting = TypedDict(
 )
 
 
-AuthSettings = TypedDict(
-    "AuthSettings",
-    {
-        "AgentToken": BearerFormatAuthSetting,
-        "AccountToken": BearerFormatAuthSetting,
-    },
-    total=False,
-)
+class AuthSettings(TypedDict, total=False):
+    AgentToken: BearerFormatAuthSetting
+    AccountToken: BearerFormatAuthSetting
 
 
 class HostSettingVariable(TypedDict):
     description: str
     default_value: str
-    enum_values: List[str]
+    enum_values: list[str]
 
 
 class HostSetting(TypedDict):
     url: str
     description: str
-    variables: NotRequired[Dict[str, HostSettingVariable]]
+    variables: NotRequired[dict[str, HostSettingVariable]]
 
 
 class Configuration:
@@ -181,39 +174,39 @@ class Configuration:
     :Example:
     """
 
-    _default: ClassVar[Optional[Self]] = None
+    _default: ClassVar[Self | None] = None
 
     def __init__(
         self,
-        host: Optional[str]=None,
-        api_key: Optional[Dict[str, str]]=None,
-        api_key_prefix: Optional[Dict[str, str]]=None,
-        username: Optional[str]=None,
-        password: Optional[str]=None,
-        access_token: Optional[str]=None,
-        server_index: Optional[int]=None,
-        server_variables: Optional[ServerVariablesT]=None,
-        server_operation_index: Optional[Dict[int, int]]=None,
-        server_operation_variables: Optional[Dict[int, ServerVariablesT]]=None,
+        host: str | None=None,
+        api_key: dict[str, str] | None=None,
+        api_key_prefix: dict[str, str] | None=None,
+        username: str | None=None,
+        password: str | None=None,
+        access_token: str | None=None,
+        server_index: int | None=None,
+        server_variables: ServerVariablesT | None=None,
+        server_operation_index: dict[int, int] | None=None,
+        server_operation_variables: dict[int, ServerVariablesT] | None=None,
         ignore_operation_servers: bool=False,
-        ssl_ca_cert: Optional[str]=None,
-        retries: Optional[Union[int, Any]] = None,
-        ca_cert_data: Optional[Union[str, bytes]] = None,
-        cert_file: Optional[str]=None,
-        key_file: Optional[str]=None,
+        ssl_ca_cert: str | None=None,
+        retries: int | Any | None = None,
+        ca_cert_data: str | bytes | None = None,
+        cert_file: str | None=None,
+        key_file: str | None=None,
         verify_ssl: bool=True,
-        assert_hostname: Optional[bool]=None,
-        tls_server_name: Optional[str]=None,
-        connection_pool_maxsize: Optional[int]=None,
-        proxy: Optional[str]=None,
-        proxy_headers: Optional[Any]=None,
-        safe_chars_for_path_param: str='',
+        assert_hostname: bool | None=None,
+        tls_server_name: str | None=None,
+        connection_pool_maxsize: int | None=None,
+        proxy: str | None=None,
+        proxy_headers: Any | None=None,
+        safe_chars_for_path_param: str="",
         client_side_validation: bool=True,
-        socket_options: Optional[Any]=None,
+        socket_options: Any | None=None,
         datetime_format: str="%Y-%m-%dT%H:%M:%S.%f%z",
         date_format: str="%Y-%m-%d",
         *,
-        debug: Optional[bool] = None,
+        debug: bool | None = None,
     ) -> None:
         """Constructor
         """
@@ -262,13 +255,13 @@ class Configuration:
         """
         self.logger["package_logger"] = logging.getLogger("space_traders_api")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
-        self.logger_format = '%(asctime)s %(levelname)s %(message)s'
+        self.logger_format = "%(asctime)s %(levelname)s %(message)s"
         """Log format
         """
         self.logger_stream_handler = None
         """Log stream handler
         """
-        self.logger_file_handler: Optional[FileHandler] = None
+        self.logger_file_handler: FileHandler | None = None
         """Log file handler
         """
         self.logger_file = None
@@ -339,12 +332,12 @@ class Configuration:
         """date format
         """
 
-    def __deepcopy__(self, memo:  Dict[int, Any]) -> Self:
+    def __deepcopy__(self, memo:  dict[int, Any]) -> Self:
         cls = self.__class__
         result = cls.__new__(cls)
         memo[id(self)] = result
         for k, v in self.__dict__.items():
-            if k not in ('logger', 'logger_file_handler'):
+            if k not in ("logger", "logger_file_handler"):
                 setattr(result, k, copy.deepcopy(v, memo))
         # shallow copy of loggers
         result.logger = copy.copy(self.logger)
@@ -357,7 +350,7 @@ class Configuration:
         object.__setattr__(self, name, value)
 
     @classmethod
-    def set_default(cls, default: Optional[Self]) -> None:
+    def set_default(cls, default: Self | None) -> None:
         """Set default instance of configuration.
 
         It stores default configuration, which can be
@@ -392,7 +385,7 @@ class Configuration:
         return cls._default
 
     @property
-    def logger_file(self) -> Optional[str]:
+    def logger_file(self) -> str | None:
         """The logger file.
 
         If the logger_file is None, then add stream handler and remove file
@@ -404,7 +397,7 @@ class Configuration:
         return self.__logger_file
 
     @logger_file.setter
-    def logger_file(self, value: Optional[str]) -> None:
+    def logger_file(self, value: str | None) -> None:
         """The logger file.
 
         If the logger_file is None, then add stream handler and remove file
@@ -476,7 +469,7 @@ class Configuration:
         self.__logger_format = value
         self.logger_formatter = logging.Formatter(self.__logger_format)
 
-    def get_api_key_with_prefix(self, identifier: str, alias: Optional[str]=None) -> Optional[str]:
+    def get_api_key_with_prefix(self, identifier: str, alias: str | None=None) -> str | None:
         """Gets API key (with prefix if set).
 
         :param identifier: The identifier of apiKey.
@@ -490,12 +483,11 @@ class Configuration:
             prefix = self.api_key_prefix.get(identifier)
             if prefix:
                 return "%s %s" % (prefix, key)
-            else:
-                return key
+            return key
 
         return None
 
-    def get_basic_auth_token(self) -> Optional[str]:
+    def get_basic_auth_token(self) -> str | None:
         """Gets HTTP basic authentication header (string).
 
         :return: The token for basic HTTP authentication.
@@ -508,8 +500,8 @@ class Configuration:
             password = self.password
 
         return urllib3.util.make_headers(
-            basic_auth=username + ':' + password
-        ).get('authorization')
+            basic_auth=username + ":" + password,
+        ).get("authorization")
 
     def auth_settings(self)-> AuthSettings:
         """Gets Auth Settings dict for api client.
@@ -518,20 +510,20 @@ class Configuration:
         """
         auth: AuthSettings = {}
         if self.access_token is not None:
-            auth['AgentToken'] = {
-                'type': 'bearer',
-                'in': 'header',
-                'format': 'JWT',
-                'key': 'Authorization',
-                'value': 'Bearer ' + self.access_token
+            auth["AgentToken"] = {
+                "type": "bearer",
+                "in": "header",
+                "format": "JWT",
+                "key": "Authorization",
+                "value": "Bearer " + self.access_token,
             }
         if self.access_token is not None:
-            auth['AccountToken'] = {
-                'type': 'bearer',
-                'in': 'header',
-                'format': 'JWT',
-                'key': 'Authorization',
-                'value': 'Bearer ' + self.access_token
+            auth["AccountToken"] = {
+                "type": "bearer",
+                "in": "header",
+                "format": "JWT",
+                "key": "Authorization",
+                "value": "Bearer " + self.access_token,
             }
         return auth
 
@@ -541,29 +533,28 @@ class Configuration:
         :return: The report for debugging.
         """
         return "Python SDK Debug Report:\n"\
-               "OS: {env}\n"\
-               "Python Version: {pyversion}\n"\
+               f"OS: {sys.platform}\n"\
+               f"Python Version: {sys.version}\n"\
                "Version of the API: v2.3.0\n"\
-               "SDK Package Version: 1.0.0".\
-               format(env=sys.platform, pyversion=sys.version)
+               "SDK Package Version: 1.0.0"
 
-    def get_host_settings(self) -> List[HostSetting]:
+    def get_host_settings(self) -> list[HostSetting]:
         """Gets an array of host settings
 
         :return: An array of host settings
         """
         return [
             {
-                'url': "https://api.spacetraders.io/v2",
-                'description': "v2",
-            }
+                "url": "https://api.spacetraders.io/v2",
+                "description": "v2",
+            },
         ]
 
     def get_host_from_settings(
         self,
-        index: Optional[int],
-        variables: Optional[ServerVariablesT]=None,
-        servers: Optional[List[HostSetting]]=None,
+        index: int | None,
+        variables: ServerVariablesT | None=None,
+        servers: list[HostSetting] | None=None,
     ) -> str:
         """Gets host URL based on the index and variables
         :param index: array index of the host settings
@@ -581,24 +572,24 @@ class Configuration:
             server = servers[index]
         except IndexError:
             raise ValueError(
-                "Invalid index {0} when selecting the host settings. "
-                "Must be less than {1}".format(index, len(servers)))
+                f"Invalid index {index} when selecting the host settings. "
+                f"Must be less than {len(servers)}")
 
-        url = server['url']
+        url = server["url"]
 
         # go through variables and replace placeholders
-        for variable_name, variable in server.get('variables', {}).items():
+        for variable_name, variable in server.get("variables", {}).items():
             used_value = variables.get(
-                variable_name, variable['default_value'])
+                variable_name, variable["default_value"])
 
-            if 'enum_values' in variable \
-                    and variable['enum_values'] \
-                    and used_value not in variable['enum_values']:
+            if "enum_values" in variable \
+                    and variable["enum_values"] \
+                    and used_value not in variable["enum_values"]:
                 raise ValueError(
                     "The variable `{0}` in the host URL has invalid value "
                     "{1}. Must be {2}.".format(
                         variable_name, variables[variable_name],
-                        variable['enum_values']))
+                        variable["enum_values"]))
 
             url = url.replace("{" + variable_name + "}", used_value)
 

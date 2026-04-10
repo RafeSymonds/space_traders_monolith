@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,27 +13,28 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
-
 from datetime import datetime
+from typing import Any, ClassVar, Self
+
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from space_traders_api.models.ship_nav_route_waypoint import ShipNavRouteWaypoint
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.ship_nav_route_waypoint import ShipNavRouteWaypoint
+
 
 class ShipNavRoute(BaseModel):
     """
     The routing information for the ship's most recent transit or current location.
-    """ # noqa: E501
+    """
     destination: ShipNavRouteWaypoint
     origin: ShipNavRouteWaypoint
     departure_time: datetime = Field(description="The date time of the ship's departure.", alias="departureTime")
     arrival: datetime = Field(description="The date time of the ship's arrival. If the ship is in-transit, this is the expected time of arrival.")
-    __properties: ClassVar[List[str]] = ["destination", "origin", "departureTime", "arrival"]
+    __properties: ClassVar[list[str]] = ["destination", "origin", "departureTime", "arrival"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,11 +53,11 @@ class ShipNavRoute(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipNavRoute from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -67,7 +67,7 @@ class ShipNavRoute(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -77,14 +77,14 @@ class ShipNavRoute(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of destination
         if self.destination:
-            _dict['destination'] = self.destination.to_dict()
+            _dict["destination"] = self.destination.to_dict()
         # override the default output from pydantic by calling `to_dict()` of origin
         if self.origin:
-            _dict['origin'] = self.origin.to_dict()
+            _dict["origin"] = self.origin.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipNavRoute from a dict"""
         if obj is None:
             return None
@@ -96,7 +96,7 @@ class ShipNavRoute(BaseModel):
             "destination": ShipNavRouteWaypoint.from_dict(obj["destination"]) if obj.get("destination") is not None else None,
             "origin": ShipNavRouteWaypoint.from_dict(obj["origin"]) if obj.get("origin") is not None else None,
             "departureTime": obj.get("departureTime"),
-            "arrival": obj.get("arrival")
+            "arrival": obj.get("arrival"),
         })
         return _obj
 

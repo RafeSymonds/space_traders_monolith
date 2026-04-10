@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,23 +13,23 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
-
 from datetime import datetime
+from typing import Annotated, Any, ClassVar, Self
+
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
-from space_traders_api.models.contract_terms import ContractTerms
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.contract_terms import ContractTerms
+
 
 class Contract(BaseModel):
     """
     Contract details.
-    """ # noqa: E501
+    """
     id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="ID of the contract.")
     faction_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the faction that this contract is for.", alias="factionSymbol")
     type: StrictStr = Field(description="Type of contract.")
@@ -38,13 +37,13 @@ class Contract(BaseModel):
     accepted: StrictBool = Field(description="Whether the contract has been accepted by the agent")
     fulfilled: StrictBool = Field(description="Whether the contract has been fulfilled")
     expiration: datetime = Field(description="Deprecated in favor of deadlineToAccept")
-    deadline_to_accept: Optional[datetime] = Field(default=None, description="The time at which the contract is no longer available to be accepted", alias="deadlineToAccept")
-    __properties: ClassVar[List[str]] = ["id", "factionSymbol", "type", "terms", "accepted", "fulfilled", "expiration", "deadlineToAccept"]
+    deadline_to_accept: datetime | None = Field(default=None, description="The time at which the contract is no longer available to be accepted", alias="deadlineToAccept")
+    __properties: ClassVar[list[str]] = ["id", "factionSymbol", "type", "terms", "accepted", "fulfilled", "expiration", "deadlineToAccept"]
 
-    @field_validator('type')
+    @field_validator("type")
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['PROCUREMENT', 'TRANSPORT', 'SHUTTLE']):
+        if value not in set(["PROCUREMENT", "TRANSPORT", "SHUTTLE"]):
             raise ValueError("must be one of enum values ('PROCUREMENT', 'TRANSPORT', 'SHUTTLE')")
         return value
 
@@ -65,11 +64,11 @@ class Contract(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Contract from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -79,7 +78,7 @@ class Contract(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -89,11 +88,11 @@ class Contract(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of terms
         if self.terms:
-            _dict['terms'] = self.terms.to_dict()
+            _dict["terms"] = self.terms.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Contract from a dict"""
         if obj is None:
             return None
@@ -109,7 +108,7 @@ class Contract(BaseModel):
             "accepted": obj.get("accepted") if obj.get("accepted") is not None else False,
             "fulfilled": obj.get("fulfilled") if obj.get("fulfilled") is not None else False,
             "expiration": obj.get("expiration"),
-            "deadlineToAccept": obj.get("deadlineToAccept")
+            "deadlineToAccept": obj.get("deadlineToAccept"),
         })
         return _obj
 

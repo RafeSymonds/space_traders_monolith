@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.meta import Meta
 from space_traders_api.models.waypoint import Waypoint
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class GetSystemWaypoints200Response(BaseModel):
     """
     Successfully listed waypoints.
-    """ # noqa: E501
-    data: List[Waypoint]
+    """
+    data: list[Waypoint]
     meta: Meta
-    __properties: ClassVar[List[str]] = ["data", "meta"]
+    __properties: ClassVar[list[str]] = ["data", "meta"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +51,11 @@ class GetSystemWaypoints200Response(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of GetSystemWaypoints200Response from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +65,7 @@ class GetSystemWaypoints200Response(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -79,14 +79,14 @@ class GetSystemWaypoints200Response(BaseModel):
             for _item_data in self.data:
                 if _item_data:
                     _items.append(_item_data.to_dict())
-            _dict['data'] = _items
+            _dict["data"] = _items
         # override the default output from pydantic by calling `to_dict()` of meta
         if self.meta:
-            _dict['meta'] = self.meta.to_dict()
+            _dict["meta"] = self.meta.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of GetSystemWaypoints200Response from a dict"""
         if obj is None:
             return None
@@ -96,7 +96,7 @@ class GetSystemWaypoints200Response(BaseModel):
 
         _obj = cls.model_validate({
             "data": [Waypoint.from_dict(_item) for _item in obj["data"]] if obj.get("data") is not None else None,
-            "meta": Meta.from_dict(obj["meta"]) if obj.get("meta") is not None else None
+            "meta": Meta.from_dict(obj["meta"]) if obj.get("meta") is not None else None,
         })
         return _obj
 

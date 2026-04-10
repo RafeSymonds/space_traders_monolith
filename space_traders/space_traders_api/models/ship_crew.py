@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,33 +13,32 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class ShipCrew(BaseModel):
     """
     The ship's crew service and maintain the ship's systems and equipment.
-    """ # noqa: E501
+    """
     current: StrictInt = Field(description="The current number of crew members on the ship.")
     required: StrictInt = Field(description="The minimum number of crew members required to maintain the ship.")
     capacity: StrictInt = Field(description="The maximum number of crew members the ship can support.")
     rotation: StrictStr = Field(description="The rotation of crew shifts. A stricter shift improves the ship's performance. A more relaxed shift improves the crew's morale.")
     morale: Annotated[int, Field(le=100, strict=True, ge=0)] = Field(description="A rough measure of the crew's morale. A higher morale means the crew is happier and more productive. A lower morale means the ship is more prone to accidents.")
     wages: Annotated[int, Field(strict=True, ge=0)] = Field(description="The amount of credits per crew member paid per hour. Wages are paid when a ship docks at a civilized waypoint.")
-    __properties: ClassVar[List[str]] = ["current", "required", "capacity", "rotation", "morale", "wages"]
+    __properties: ClassVar[list[str]] = ["current", "required", "capacity", "rotation", "morale", "wages"]
 
-    @field_validator('rotation')
+    @field_validator("rotation")
     def rotation_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['STRICT', 'RELAXED']):
+        if value not in set(["STRICT", "RELAXED"]):
             raise ValueError("must be one of enum values ('STRICT', 'RELAXED')")
         return value
 
@@ -61,11 +59,11 @@ class ShipCrew(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipCrew from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -75,7 +73,7 @@ class ShipCrew(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -86,7 +84,7 @@ class ShipCrew(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipCrew from a dict"""
         if obj is None:
             return None
@@ -98,9 +96,9 @@ class ShipCrew(BaseModel):
             "current": obj.get("current"),
             "required": obj.get("required"),
             "capacity": obj.get("capacity"),
-            "rotation": obj.get("rotation") if obj.get("rotation") is not None else 'STRICT',
+            "rotation": obj.get("rotation") if obj.get("rotation") is not None else "STRICT",
             "morale": obj.get("morale"),
-            "wages": obj.get("wages")
+            "wages": obj.get("wages"),
         })
         return _obj
 

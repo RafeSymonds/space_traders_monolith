@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,30 +13,31 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.market_trade_good import MarketTradeGood
 from space_traders_api.models.market_transaction import MarketTransaction
 from space_traders_api.models.trade_good import TradeGood
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class Market(BaseModel):
     """
     Market details.
-    """ # noqa: E501
+    """
     symbol: StrictStr = Field(description="The symbol of the market. The symbol is the same as the waypoint where the market is located.")
-    exports: List[TradeGood] = Field(description="The list of goods that are exported from this market.")
-    imports: List[TradeGood] = Field(description="The list of goods that are sought as imports in this market.")
-    exchange: List[TradeGood] = Field(description="The list of goods that are bought and sold between agents at this market.")
-    transactions: Optional[List[MarketTransaction]] = Field(default=None, description="The list of recent transactions at this market. Visible only when a ship is present at the market.")
-    trade_goods: Optional[List[MarketTradeGood]] = Field(default=None, description="The list of goods that are traded at this market. Visible only when a ship is present at the market.", alias="tradeGoods")
-    __properties: ClassVar[List[str]] = ["symbol", "exports", "imports", "exchange", "transactions", "tradeGoods"]
+    exports: list[TradeGood] = Field(description="The list of goods that are exported from this market.")
+    imports: list[TradeGood] = Field(description="The list of goods that are sought as imports in this market.")
+    exchange: list[TradeGood] = Field(description="The list of goods that are bought and sold between agents at this market.")
+    transactions: list[MarketTransaction] | None = Field(default=None, description="The list of recent transactions at this market. Visible only when a ship is present at the market.")
+    trade_goods: list[MarketTradeGood] | None = Field(default=None, description="The list of goods that are traded at this market. Visible only when a ship is present at the market.", alias="tradeGoods")
+    __properties: ClassVar[list[str]] = ["symbol", "exports", "imports", "exchange", "transactions", "tradeGoods"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +56,11 @@ class Market(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Market from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +70,7 @@ class Market(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -84,39 +84,39 @@ class Market(BaseModel):
             for _item_exports in self.exports:
                 if _item_exports:
                     _items.append(_item_exports.to_dict())
-            _dict['exports'] = _items
+            _dict["exports"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in imports (list)
         _items = []
         if self.imports:
             for _item_imports in self.imports:
                 if _item_imports:
                     _items.append(_item_imports.to_dict())
-            _dict['imports'] = _items
+            _dict["imports"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in exchange (list)
         _items = []
         if self.exchange:
             for _item_exchange in self.exchange:
                 if _item_exchange:
                     _items.append(_item_exchange.to_dict())
-            _dict['exchange'] = _items
+            _dict["exchange"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in transactions (list)
         _items = []
         if self.transactions:
             for _item_transactions in self.transactions:
                 if _item_transactions:
                     _items.append(_item_transactions.to_dict())
-            _dict['transactions'] = _items
+            _dict["transactions"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in trade_goods (list)
         _items = []
         if self.trade_goods:
             for _item_trade_goods in self.trade_goods:
                 if _item_trade_goods:
                     _items.append(_item_trade_goods.to_dict())
-            _dict['tradeGoods'] = _items
+            _dict["tradeGoods"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Market from a dict"""
         if obj is None:
             return None
@@ -130,7 +130,7 @@ class Market(BaseModel):
             "imports": [TradeGood.from_dict(_item) for _item in obj["imports"]] if obj.get("imports") is not None else None,
             "exchange": [TradeGood.from_dict(_item) for _item in obj["exchange"]] if obj.get("exchange") is not None else None,
             "transactions": [MarketTransaction.from_dict(_item) for _item in obj["transactions"]] if obj.get("transactions") is not None else None,
-            "tradeGoods": [MarketTradeGood.from_dict(_item) for _item in obj["tradeGoods"]] if obj.get("tradeGoods") is not None else None
+            "tradeGoods": [MarketTradeGood.from_dict(_item) for _item in obj["tradeGoods"]] if obj.get("tradeGoods") is not None else None,
         })
         return _obj
 

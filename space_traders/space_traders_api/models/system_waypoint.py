@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,30 +13,30 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.waypoint_orbital import WaypointOrbital
 from space_traders_api.models.waypoint_type import WaypointType
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class SystemWaypoint(BaseModel):
     """
     Waypoint details.
-    """ # noqa: E501
+    """
     symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the waypoint.")
     type: WaypointType
     x: StrictInt = Field(description="Relative position of the waypoint on the system's x axis. This is not an absolute position in the universe.")
     y: StrictInt = Field(description="Relative position of the waypoint on the system's y axis. This is not an absolute position in the universe.")
-    orbitals: List[WaypointOrbital] = Field(description="Waypoints that orbit this waypoint.")
-    orbits: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The symbol of the parent waypoint, if this waypoint is in orbit around another waypoint. Otherwise this value is undefined.")
-    __properties: ClassVar[List[str]] = ["symbol", "type", "x", "y", "orbitals", "orbits"]
+    orbitals: list[WaypointOrbital] = Field(description="Waypoints that orbit this waypoint.")
+    orbits: Annotated[str, Field(min_length=1, strict=True)] | None = Field(default=None, description="The symbol of the parent waypoint, if this waypoint is in orbit around another waypoint. Otherwise this value is undefined.")
+    __properties: ClassVar[list[str]] = ["symbol", "type", "x", "y", "orbitals", "orbits"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +55,11 @@ class SystemWaypoint(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of SystemWaypoint from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +69,7 @@ class SystemWaypoint(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -84,11 +83,11 @@ class SystemWaypoint(BaseModel):
             for _item_orbitals in self.orbitals:
                 if _item_orbitals:
                     _items.append(_item_orbitals.to_dict())
-            _dict['orbitals'] = _items
+            _dict["orbitals"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of SystemWaypoint from a dict"""
         if obj is None:
             return None
@@ -102,7 +101,7 @@ class SystemWaypoint(BaseModel):
             "x": obj.get("x"),
             "y": obj.get("y"),
             "orbitals": [WaypointOrbital.from_dict(_item) for _item in obj["orbitals"]] if obj.get("orbitals") is not None else None,
-            "orbits": obj.get("orbits")
+            "orbits": obj.get("orbits"),
         })
         return _obj
 

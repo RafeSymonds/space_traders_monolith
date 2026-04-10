@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.cooldown import Cooldown
 from space_traders_api.models.survey import Survey
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class CreateSurvey201ResponseData(BaseModel):
     """
     CreateSurvey201ResponseData
-    """ # noqa: E501
+    """
     cooldown: Cooldown
-    surveys: List[Survey] = Field(description="Surveys created by this action.")
-    __properties: ClassVar[List[str]] = ["cooldown", "surveys"]
+    surveys: list[Survey] = Field(description="Surveys created by this action.")
+    __properties: ClassVar[list[str]] = ["cooldown", "surveys"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +51,11 @@ class CreateSurvey201ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of CreateSurvey201ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +65,7 @@ class CreateSurvey201ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -75,18 +75,18 @@ class CreateSurvey201ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of cooldown
         if self.cooldown:
-            _dict['cooldown'] = self.cooldown.to_dict()
+            _dict["cooldown"] = self.cooldown.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in surveys (list)
         _items = []
         if self.surveys:
             for _item_surveys in self.surveys:
                 if _item_surveys:
                     _items.append(_item_surveys.to_dict())
-            _dict['surveys'] = _items
+            _dict["surveys"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of CreateSurvey201ResponseData from a dict"""
         if obj is None:
             return None
@@ -96,7 +96,7 @@ class CreateSurvey201ResponseData(BaseModel):
 
         _obj = cls.model_validate({
             "cooldown": Cooldown.from_dict(obj["cooldown"]) if obj.get("cooldown") is not None else None,
-            "surveys": [Survey.from_dict(_item) for _item in obj["surveys"]] if obj.get("surveys") is not None else None
+            "surveys": [Survey.from_dict(_item) for _item in obj["surveys"]] if obj.get("surveys") is not None else None,
         })
         return _obj
 

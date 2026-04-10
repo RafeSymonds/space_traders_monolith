@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,45 +13,45 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
-from space_traders_api.models.ship_requirements import ShipRequirements
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.ship_requirements import ShipRequirements
+
 
 class ShipMount(BaseModel):
     """
     A mount is installed on the exterier of a ship.
-    """ # noqa: E501
+    """
     symbol: StrictStr = Field(description="Symbol of this mount.")
     name: StrictStr = Field(description="Name of this mount.")
     description: StrictStr = Field(description="Description of this mount.")
-    strength: Optional[Annotated[int, Field(strict=True, ge=0)]] = Field(default=None, description="Mounts that have this value, such as mining lasers, denote how powerful this mount's capabilities are.")
-    deposits: Optional[List[StrictStr]] = Field(default=None, description="Mounts that have this value denote what goods can be produced from using the mount.")
+    strength: Annotated[int, Field(strict=True, ge=0)] | None = Field(default=None, description="Mounts that have this value, such as mining lasers, denote how powerful this mount's capabilities are.")
+    deposits: list[StrictStr] | None = Field(default=None, description="Mounts that have this value denote what goods can be produced from using the mount.")
     requirements: ShipRequirements
-    __properties: ClassVar[List[str]] = ["symbol", "name", "description", "strength", "deposits", "requirements"]
+    __properties: ClassVar[list[str]] = ["symbol", "name", "description", "strength", "deposits", "requirements"]
 
-    @field_validator('symbol')
+    @field_validator("symbol")
     def symbol_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['MOUNT_GAS_SIPHON_I', 'MOUNT_GAS_SIPHON_II', 'MOUNT_GAS_SIPHON_III', 'MOUNT_SURVEYOR_I', 'MOUNT_SURVEYOR_II', 'MOUNT_SURVEYOR_III', 'MOUNT_SENSOR_ARRAY_I', 'MOUNT_SENSOR_ARRAY_II', 'MOUNT_SENSOR_ARRAY_III', 'MOUNT_MINING_LASER_I', 'MOUNT_MINING_LASER_II', 'MOUNT_MINING_LASER_III', 'MOUNT_LASER_CANNON_I', 'MOUNT_MISSILE_LAUNCHER_I', 'MOUNT_TURRET_I']):
+        if value not in set(["MOUNT_GAS_SIPHON_I", "MOUNT_GAS_SIPHON_II", "MOUNT_GAS_SIPHON_III", "MOUNT_SURVEYOR_I", "MOUNT_SURVEYOR_II", "MOUNT_SURVEYOR_III", "MOUNT_SENSOR_ARRAY_I", "MOUNT_SENSOR_ARRAY_II", "MOUNT_SENSOR_ARRAY_III", "MOUNT_MINING_LASER_I", "MOUNT_MINING_LASER_II", "MOUNT_MINING_LASER_III", "MOUNT_LASER_CANNON_I", "MOUNT_MISSILE_LAUNCHER_I", "MOUNT_TURRET_I"]):
             raise ValueError("must be one of enum values ('MOUNT_GAS_SIPHON_I', 'MOUNT_GAS_SIPHON_II', 'MOUNT_GAS_SIPHON_III', 'MOUNT_SURVEYOR_I', 'MOUNT_SURVEYOR_II', 'MOUNT_SURVEYOR_III', 'MOUNT_SENSOR_ARRAY_I', 'MOUNT_SENSOR_ARRAY_II', 'MOUNT_SENSOR_ARRAY_III', 'MOUNT_MINING_LASER_I', 'MOUNT_MINING_LASER_II', 'MOUNT_MINING_LASER_III', 'MOUNT_LASER_CANNON_I', 'MOUNT_MISSILE_LAUNCHER_I', 'MOUNT_TURRET_I')")
         return value
 
-    @field_validator('deposits')
+    @field_validator("deposits")
     def deposits_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
 
         for i in value:
-            if i not in set(['QUARTZ_SAND', 'SILICON_CRYSTALS', 'PRECIOUS_STONES', 'ICE_WATER', 'AMMONIA_ICE', 'IRON_ORE', 'COPPER_ORE', 'SILVER_ORE', 'ALUMINUM_ORE', 'GOLD_ORE', 'PLATINUM_ORE', 'DIAMONDS', 'URANITE_ORE', 'MERITIUM_ORE']):
+            if i not in set(["QUARTZ_SAND", "SILICON_CRYSTALS", "PRECIOUS_STONES", "ICE_WATER", "AMMONIA_ICE", "IRON_ORE", "COPPER_ORE", "SILVER_ORE", "ALUMINUM_ORE", "GOLD_ORE", "PLATINUM_ORE", "DIAMONDS", "URANITE_ORE", "MERITIUM_ORE"]):
                 raise ValueError("each list item must be one of ('QUARTZ_SAND', 'SILICON_CRYSTALS', 'PRECIOUS_STONES', 'ICE_WATER', 'AMMONIA_ICE', 'IRON_ORE', 'COPPER_ORE', 'SILVER_ORE', 'ALUMINUM_ORE', 'GOLD_ORE', 'PLATINUM_ORE', 'DIAMONDS', 'URANITE_ORE', 'MERITIUM_ORE')")
         return value
 
@@ -73,11 +72,11 @@ class ShipMount(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipMount from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -87,7 +86,7 @@ class ShipMount(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -97,11 +96,11 @@ class ShipMount(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of requirements
         if self.requirements:
-            _dict['requirements'] = self.requirements.to_dict()
+            _dict["requirements"] = self.requirements.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipMount from a dict"""
         if obj is None:
             return None
@@ -115,7 +114,7 @@ class ShipMount(BaseModel):
             "description": obj.get("description"),
             "strength": obj.get("strength"),
             "deposits": obj.get("deposits"),
-            "requirements": ShipRequirements.from_dict(obj["requirements"]) if obj.get("requirements") is not None else None
+            "requirements": ShipRequirements.from_dict(obj["requirements"]) if obj.get("requirements") is not None else None,
         })
         return _obj
 

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,19 +13,19 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
-
 from datetime import datetime
+from typing import Annotated, Any, ClassVar, Self
+
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.survey_deposit import SurveyDeposit
 from space_traders_api.models.survey_size import SurveySize
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class Survey(BaseModel):
     """
@@ -34,10 +33,10 @@ class Survey(BaseModel):
     """ # noqa: E501
     signature: Annotated[str, Field(min_length=1, strict=True)] = Field(description="A unique signature for the location of this survey. This signature is verified when attempting an extraction using this survey.")
     symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the waypoint that this survey is for.")
-    deposits: List[SurveyDeposit] = Field(description="A list of deposits that can be found at this location. A ship will extract one of these deposits when using this survey in an extraction request. If multiple deposits of the same type are present, the chance of extracting that deposit is increased.")
+    deposits: list[SurveyDeposit] = Field(description="A list of deposits that can be found at this location. A ship will extract one of these deposits when using this survey in an extraction request. If multiple deposits of the same type are present, the chance of extracting that deposit is increased.")
     expiration: datetime = Field(description="The date and time when the survey expires. After this date and time, the survey will no longer be available for extraction.")
     size: SurveySize
-    __properties: ClassVar[List[str]] = ["signature", "symbol", "deposits", "expiration", "size"]
+    __properties: ClassVar[list[str]] = ["signature", "symbol", "deposits", "expiration", "size"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +55,11 @@ class Survey(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Survey from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +69,7 @@ class Survey(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -84,11 +83,11 @@ class Survey(BaseModel):
             for _item_deposits in self.deposits:
                 if _item_deposits:
                     _items.append(_item_deposits.to_dict())
-            _dict['deposits'] = _items
+            _dict["deposits"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Survey from a dict"""
         if obj is None:
             return None
@@ -101,7 +100,7 @@ class Survey(BaseModel):
             "symbol": obj.get("symbol"),
             "deposits": [SurveyDeposit.from_dict(_item) for _item in obj["deposits"]] if obj.get("deposits") is not None else None,
             "expiration": obj.get("expiration"),
-            "size": obj.get("size")
+            "size": obj.get("size"),
         })
         return _obj
 

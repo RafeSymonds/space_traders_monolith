@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,30 +13,30 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.shipyard_ship import ShipyardShip
 from space_traders_api.models.shipyard_ship_types_inner import ShipyardShipTypesInner
 from space_traders_api.models.shipyard_transaction import ShipyardTransaction
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class Shipyard(BaseModel):
     """
     Shipyard details.
-    """ # noqa: E501
+    """
     symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The symbol of the shipyard. The symbol is the same as the waypoint where the shipyard is located.")
-    ship_types: List[ShipyardShipTypesInner] = Field(description="The list of ship types available for purchase at this shipyard.", alias="shipTypes")
-    transactions: Optional[List[ShipyardTransaction]] = Field(default=None, description="The list of recent transactions at this shipyard.")
-    ships: Optional[List[ShipyardShip]] = Field(default=None, description="The ships that are currently available for purchase at the shipyard.")
+    ship_types: list[ShipyardShipTypesInner] = Field(description="The list of ship types available for purchase at this shipyard.", alias="shipTypes")
+    transactions: list[ShipyardTransaction] | None = Field(default=None, description="The list of recent transactions at this shipyard.")
+    ships: list[ShipyardShip] | None = Field(default=None, description="The ships that are currently available for purchase at the shipyard.")
     modifications_fee: StrictInt = Field(description="The fee to modify a ship at this shipyard. This includes installing or removing modules and mounts on a ship. In the case of mounts, the fee is a flat rate per mount. In the case of modules, the fee is per slot the module occupies.", alias="modificationsFee")
-    __properties: ClassVar[List[str]] = ["symbol", "shipTypes", "transactions", "ships", "modificationsFee"]
+    __properties: ClassVar[list[str]] = ["symbol", "shipTypes", "transactions", "ships", "modificationsFee"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,11 +55,11 @@ class Shipyard(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Shipyard from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -70,7 +69,7 @@ class Shipyard(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -84,25 +83,25 @@ class Shipyard(BaseModel):
             for _item_ship_types in self.ship_types:
                 if _item_ship_types:
                     _items.append(_item_ship_types.to_dict())
-            _dict['shipTypes'] = _items
+            _dict["shipTypes"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in transactions (list)
         _items = []
         if self.transactions:
             for _item_transactions in self.transactions:
                 if _item_transactions:
                     _items.append(_item_transactions.to_dict())
-            _dict['transactions'] = _items
+            _dict["transactions"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in ships (list)
         _items = []
         if self.ships:
             for _item_ships in self.ships:
                 if _item_ships:
                     _items.append(_item_ships.to_dict())
-            _dict['ships'] = _items
+            _dict["ships"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Shipyard from a dict"""
         if obj is None:
             return None
@@ -115,7 +114,7 @@ class Shipyard(BaseModel):
             "shipTypes": [ShipyardShipTypesInner.from_dict(_item) for _item in obj["shipTypes"]] if obj.get("shipTypes") is not None else None,
             "transactions": [ShipyardTransaction.from_dict(_item) for _item in obj["transactions"]] if obj.get("transactions") is not None else None,
             "ships": [ShipyardShip.from_dict(_item) for _item in obj["ships"]] if obj.get("ships") is not None else None,
-            "modificationsFee": obj.get("modificationsFee")
+            "modificationsFee": obj.get("modificationsFee"),
         })
         return _obj
 

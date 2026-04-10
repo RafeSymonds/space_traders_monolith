@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,12 +13,15 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.cooldown import Cooldown
 from space_traders_api.models.ship_cargo import ShipCargo
 from space_traders_api.models.ship_crew import ShipCrew
@@ -31,14 +33,12 @@ from space_traders_api.models.ship_mount import ShipMount
 from space_traders_api.models.ship_nav import ShipNav
 from space_traders_api.models.ship_reactor import ShipReactor
 from space_traders_api.models.ship_registration import ShipRegistration
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class Ship(BaseModel):
     """
     Ship details.
-    """ # noqa: E501
+    """
     symbol: StrictStr = Field(description="The globally unique identifier of the ship in the following format: `[AGENT_SYMBOL]-[HEX_ID]`")
     registration: ShipRegistration
     nav: ShipNav
@@ -46,12 +46,12 @@ class Ship(BaseModel):
     frame: ShipFrame
     reactor: ShipReactor
     engine: ShipEngine
-    modules: List[ShipModule] = Field(description="Modules installed in this ship.")
-    mounts: List[ShipMount] = Field(description="Mounts installed in this ship.")
+    modules: list[ShipModule] = Field(description="Modules installed in this ship.")
+    mounts: list[ShipMount] = Field(description="Mounts installed in this ship.")
     cargo: ShipCargo
     fuel: ShipFuel
     cooldown: Cooldown
-    __properties: ClassVar[List[str]] = ["symbol", "registration", "nav", "crew", "frame", "reactor", "engine", "modules", "mounts", "cargo", "fuel", "cooldown"]
+    __properties: ClassVar[list[str]] = ["symbol", "registration", "nav", "crew", "frame", "reactor", "engine", "modules", "mounts", "cargo", "fuel", "cooldown"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -70,11 +70,11 @@ class Ship(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of Ship from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -84,7 +84,7 @@ class Ship(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -94,49 +94,49 @@ class Ship(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of registration
         if self.registration:
-            _dict['registration'] = self.registration.to_dict()
+            _dict["registration"] = self.registration.to_dict()
         # override the default output from pydantic by calling `to_dict()` of nav
         if self.nav:
-            _dict['nav'] = self.nav.to_dict()
+            _dict["nav"] = self.nav.to_dict()
         # override the default output from pydantic by calling `to_dict()` of crew
         if self.crew:
-            _dict['crew'] = self.crew.to_dict()
+            _dict["crew"] = self.crew.to_dict()
         # override the default output from pydantic by calling `to_dict()` of frame
         if self.frame:
-            _dict['frame'] = self.frame.to_dict()
+            _dict["frame"] = self.frame.to_dict()
         # override the default output from pydantic by calling `to_dict()` of reactor
         if self.reactor:
-            _dict['reactor'] = self.reactor.to_dict()
+            _dict["reactor"] = self.reactor.to_dict()
         # override the default output from pydantic by calling `to_dict()` of engine
         if self.engine:
-            _dict['engine'] = self.engine.to_dict()
+            _dict["engine"] = self.engine.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in modules (list)
         _items = []
         if self.modules:
             for _item_modules in self.modules:
                 if _item_modules:
                     _items.append(_item_modules.to_dict())
-            _dict['modules'] = _items
+            _dict["modules"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in mounts (list)
         _items = []
         if self.mounts:
             for _item_mounts in self.mounts:
                 if _item_mounts:
                     _items.append(_item_mounts.to_dict())
-            _dict['mounts'] = _items
+            _dict["mounts"] = _items
         # override the default output from pydantic by calling `to_dict()` of cargo
         if self.cargo:
-            _dict['cargo'] = self.cargo.to_dict()
+            _dict["cargo"] = self.cargo.to_dict()
         # override the default output from pydantic by calling `to_dict()` of fuel
         if self.fuel:
-            _dict['fuel'] = self.fuel.to_dict()
+            _dict["fuel"] = self.fuel.to_dict()
         # override the default output from pydantic by calling `to_dict()` of cooldown
         if self.cooldown:
-            _dict['cooldown'] = self.cooldown.to_dict()
+            _dict["cooldown"] = self.cooldown.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of Ship from a dict"""
         if obj is None:
             return None
@@ -156,7 +156,7 @@ class Ship(BaseModel):
             "mounts": [ShipMount.from_dict(_item) for _item in obj["mounts"]] if obj.get("mounts") is not None else None,
             "cargo": ShipCargo.from_dict(obj["cargo"]) if obj.get("cargo") is not None else None,
             "fuel": ShipFuel.from_dict(obj["fuel"]) if obj.get("fuel") is not None else None,
-            "cooldown": Cooldown.from_dict(obj["cooldown"]) if obj.get("cooldown") is not None else None
+            "cooldown": Cooldown.from_dict(obj["cooldown"]) if obj.get("cooldown") is not None else None,
         })
         return _obj
 

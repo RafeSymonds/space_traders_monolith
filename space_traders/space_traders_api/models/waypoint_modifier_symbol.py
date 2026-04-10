@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,9 +13,10 @@
 
 
 from __future__ import annotations
+
 import json
 from enum import Enum
-from typing_extensions import Self
+from typing import Self
 
 
 class WaypointModifierSymbol(str, Enum):
@@ -27,11 +27,11 @@ class WaypointModifierSymbol(str, Enum):
     """
     allowed enum values
     """
-    STRIPPED = 'STRIPPED'
-    UNSTABLE = 'UNSTABLE'
-    RADIATION_LEAK = 'RADIATION_LEAK'
-    CRITICAL_LIMIT = 'CRITICAL_LIMIT'
-    CIVIL_UNREST = 'CIVIL_UNREST'
+    STRIPPED = "STRIPPED"
+    UNSTABLE = "UNSTABLE"
+    RADIATION_LEAK = "RADIATION_LEAK"
+    CRITICAL_LIMIT = "CRITICAL_LIMIT"
+    CIVIL_UNREST = "CIVIL_UNREST"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

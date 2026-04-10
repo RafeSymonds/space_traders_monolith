@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,27 +13,28 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.agent import Agent
 from space_traders_api.models.market_transaction import MarketTransaction
 from space_traders_api.models.ship_cargo import ShipCargo
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class PurchaseCargo201ResponseData(BaseModel):
     """
     PurchaseCargo201ResponseData
-    """ # noqa: E501
+    """
     cargo: ShipCargo
     transaction: MarketTransaction
     agent: Agent
-    __properties: ClassVar[List[str]] = ["cargo", "transaction", "agent"]
+    __properties: ClassVar[list[str]] = ["cargo", "transaction", "agent"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,11 +53,11 @@ class PurchaseCargo201ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of PurchaseCargo201ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -67,7 +67,7 @@ class PurchaseCargo201ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -77,17 +77,17 @@ class PurchaseCargo201ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of cargo
         if self.cargo:
-            _dict['cargo'] = self.cargo.to_dict()
+            _dict["cargo"] = self.cargo.to_dict()
         # override the default output from pydantic by calling `to_dict()` of transaction
         if self.transaction:
-            _dict['transaction'] = self.transaction.to_dict()
+            _dict["transaction"] = self.transaction.to_dict()
         # override the default output from pydantic by calling `to_dict()` of agent
         if self.agent:
-            _dict['agent'] = self.agent.to_dict()
+            _dict["agent"] = self.agent.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of PurchaseCargo201ResponseData from a dict"""
         if obj is None:
             return None
@@ -98,7 +98,7 @@ class PurchaseCargo201ResponseData(BaseModel):
         _obj = cls.model_validate({
             "cargo": ShipCargo.from_dict(obj["cargo"]) if obj.get("cargo") is not None else None,
             "transaction": MarketTransaction.from_dict(obj["transaction"]) if obj.get("transaction") is not None else None,
-            "agent": Agent.from_dict(obj["agent"]) if obj.get("agent") is not None else None
+            "agent": Agent.from_dict(obj["agent"]) if obj.get("agent") is not None else None,
         })
         return _obj
 

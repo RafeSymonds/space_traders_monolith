@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,29 +13,29 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from space_traders_api.models.system_type import SystemType
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
+from space_traders_api.models.system_type import SystemType
+
 
 class ScannedSystem(BaseModel):
     """
     Details of a system was that scanned.
-    """ # noqa: E501
+    """
     symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Symbol of the system.")
     sector_symbol: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Symbol of the system's sector.", alias="sectorSymbol")
     type: SystemType
     x: StrictInt = Field(description="Position in the universe in the x axis.")
     y: StrictInt = Field(description="Position in the universe in the y axis.")
     distance: StrictInt = Field(description="The system's distance from the scanning ship.")
-    __properties: ClassVar[List[str]] = ["symbol", "sectorSymbol", "type", "x", "y", "distance"]
+    __properties: ClassVar[list[str]] = ["symbol", "sectorSymbol", "type", "x", "y", "distance"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,11 +54,11 @@ class ScannedSystem(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ScannedSystem from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -69,7 +68,7 @@ class ScannedSystem(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -80,7 +79,7 @@ class ScannedSystem(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ScannedSystem from a dict"""
         if obj is None:
             return None
@@ -94,7 +93,7 @@ class ScannedSystem(BaseModel):
             "type": obj.get("type"),
             "x": obj.get("x"),
             "y": obj.get("y"),
-            "distance": obj.get("distance")
+            "distance": obj.get("distance"),
         })
         return _obj
 

@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,27 +13,28 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.ship_condition_event import ShipConditionEvent
 from space_traders_api.models.ship_fuel import ShipFuel
 from space_traders_api.models.ship_nav import ShipNav
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class NavigateShip200ResponseData(BaseModel):
     """
     NavigateShip200ResponseData
-    """ # noqa: E501
+    """
     nav: ShipNav
     fuel: ShipFuel
-    events: List[ShipConditionEvent]
-    __properties: ClassVar[List[str]] = ["nav", "fuel", "events"]
+    events: list[ShipConditionEvent]
+    __properties: ClassVar[list[str]] = ["nav", "fuel", "events"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,11 +53,11 @@ class NavigateShip200ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of NavigateShip200ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -67,7 +67,7 @@ class NavigateShip200ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -77,21 +77,21 @@ class NavigateShip200ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of nav
         if self.nav:
-            _dict['nav'] = self.nav.to_dict()
+            _dict["nav"] = self.nav.to_dict()
         # override the default output from pydantic by calling `to_dict()` of fuel
         if self.fuel:
-            _dict['fuel'] = self.fuel.to_dict()
+            _dict["fuel"] = self.fuel.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in events (list)
         _items = []
         if self.events:
             for _item_events in self.events:
                 if _item_events:
                     _items.append(_item_events.to_dict())
-            _dict['events'] = _items
+            _dict["events"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of NavigateShip200ResponseData from a dict"""
         if obj is None:
             return None
@@ -102,7 +102,7 @@ class NavigateShip200ResponseData(BaseModel):
         _obj = cls.model_validate({
             "nav": ShipNav.from_dict(obj["nav"]) if obj.get("nav") is not None else None,
             "fuel": ShipFuel.from_dict(obj["fuel"]) if obj.get("fuel") is not None else None,
-            "events": [ShipConditionEvent.from_dict(_item) for _item in obj["events"]] if obj.get("events") is not None else None
+            "events": [ShipConditionEvent.from_dict(_item) for _item in obj["events"]] if obj.get("events") is not None else None,
         })
         return _obj
 

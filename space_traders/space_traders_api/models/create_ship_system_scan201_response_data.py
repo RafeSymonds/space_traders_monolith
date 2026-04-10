@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,25 +13,26 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic_core import to_jsonable_python
+
 from space_traders_api.models.cooldown import Cooldown
 from space_traders_api.models.scanned_system import ScannedSystem
-from typing import Optional, Set
-from typing_extensions import Self
-from pydantic_core import to_jsonable_python
+
 
 class CreateShipSystemScan201ResponseData(BaseModel):
     """
     CreateShipSystemScan201ResponseData
-    """ # noqa: E501
+    """
     cooldown: Cooldown
-    systems: List[ScannedSystem] = Field(description="List of scanned systems.")
-    __properties: ClassVar[List[str]] = ["cooldown", "systems"]
+    systems: list[ScannedSystem] = Field(description="List of scanned systems.")
+    __properties: ClassVar[list[str]] = ["cooldown", "systems"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,11 +51,11 @@ class CreateShipSystemScan201ResponseData(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of CreateShipSystemScan201ResponseData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -65,7 +65,7 @@ class CreateShipSystemScan201ResponseData(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -75,18 +75,18 @@ class CreateShipSystemScan201ResponseData(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of cooldown
         if self.cooldown:
-            _dict['cooldown'] = self.cooldown.to_dict()
+            _dict["cooldown"] = self.cooldown.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in systems (list)
         _items = []
         if self.systems:
             for _item_systems in self.systems:
                 if _item_systems:
                     _items.append(_item_systems.to_dict())
-            _dict['systems'] = _items
+            _dict["systems"] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of CreateShipSystemScan201ResponseData from a dict"""
         if obj is None:
             return None
@@ -96,7 +96,7 @@ class CreateShipSystemScan201ResponseData(BaseModel):
 
         _obj = cls.model_validate({
             "cooldown": Cooldown.from_dict(obj["cooldown"]) if obj.get("cooldown") is not None else None,
-            "systems": [ScannedSystem.from_dict(_item) for _item in obj["systems"]] if obj.get("systems") is not None else None
+            "systems": [ScannedSystem.from_dict(_item) for _item in obj["systems"]] if obj.get("systems") is not None else None,
         })
         return _obj
 

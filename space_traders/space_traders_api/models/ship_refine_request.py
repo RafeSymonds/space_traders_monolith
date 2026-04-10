@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,27 +13,27 @@
 
 
 from __future__ import annotations
+
+import json
 import pprint
 import re  # noqa: F401
-import json
+from typing import Any, ClassVar, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from typing import Optional, Set
-from typing_extensions import Self
 from pydantic_core import to_jsonable_python
+
 
 class ShipRefineRequest(BaseModel):
     """
     ShipRefineRequest
-    """ # noqa: E501
+    """
     produce: StrictStr = Field(description="The type of good to produce out of the refining process.")
-    __properties: ClassVar[List[str]] = ["produce"]
+    __properties: ClassVar[list[str]] = ["produce"]
 
-    @field_validator('produce')
+    @field_validator("produce")
     def produce_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['IRON', 'COPPER', 'SILVER', 'GOLD', 'ALUMINUM', 'PLATINUM', 'URANITE', 'MERITIUM', 'FUEL']):
+        if value not in set(["IRON", "COPPER", "SILVER", "GOLD", "ALUMINUM", "PLATINUM", "URANITE", "MERITIUM", "FUEL"]):
             raise ValueError("must be one of enum values ('IRON', 'COPPER', 'SILVER', 'GOLD', 'ALUMINUM', 'PLATINUM', 'URANITE', 'MERITIUM', 'FUEL')")
         return value
 
@@ -55,11 +54,11 @@ class ShipRefineRequest(BaseModel):
         return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> Self | None:
         """Create an instance of ShipRefineRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return the dictionary representation of the model using alias.
 
         This has the following differences from calling pydantic's
@@ -69,7 +68,7 @@ class ShipRefineRequest(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
+        excluded_fields: set[str] = set([
         ])
 
         _dict = self.model_dump(
@@ -80,7 +79,7 @@ class ShipRefineRequest(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict[str, Any] | None) -> Self | None:
         """Create an instance of ShipRefineRequest from a dict"""
         if obj is None:
             return None
@@ -89,7 +88,7 @@ class ShipRefineRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "produce": obj.get("produce")
+            "produce": obj.get("produce"),
         })
         return _obj
 

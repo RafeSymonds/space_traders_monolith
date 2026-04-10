@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
     SpaceTraders API
@@ -14,16 +13,15 @@
 
 
 from __future__ import annotations
-from inspect import getfullargspec
+
 import json
 import pprint
 import re  # noqa: F401
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import List, Optional
+from typing import TYPE_CHECKING, Any, Self
+
+from pydantic import BaseModel, ValidationError, field_validator
+
 from space_traders_api.models.waypoint_trait_symbol import WaypointTraitSymbol
-from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
-from typing_extensions import Literal, Self
-from pydantic import Field
 
 GETSYSTEMWAYPOINTSTRAITSPARAMETER_ANY_OF_SCHEMAS = ["List[WaypointTraitSymbol]", "WaypointTraitSymbol"]
 
@@ -33,14 +31,14 @@ class GetSystemWaypointsTraitsParameter(BaseModel):
     """
 
     # data type: List[WaypointTraitSymbol]
-    anyof_schema_1_validator: Optional[List[WaypointTraitSymbol]] = None
+    anyof_schema_1_validator: list[WaypointTraitSymbol] | None = None
     # data type: WaypointTraitSymbol
-    anyof_schema_2_validator: Optional[WaypointTraitSymbol] = None
+    anyof_schema_2_validator: WaypointTraitSymbol | None = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[List[WaypointTraitSymbol], WaypointTraitSymbol]] = None
+        actual_instance: list[WaypointTraitSymbol] | WaypointTraitSymbol | None = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "List[WaypointTraitSymbol]", "WaypointTraitSymbol" }
+    any_of_schemas: set[str] = { "List[WaypointTraitSymbol]", "WaypointTraitSymbol" }
 
     model_config = {
         "validate_assignment": True,
@@ -57,7 +55,7 @@ class GetSystemWaypointsTraitsParameter(BaseModel):
         else:
             super().__init__(**kwargs)
 
-    @field_validator('actual_instance')
+    @field_validator("actual_instance")
     def actual_instance_must_validate_anyof(cls, v):
         instance = GetSystemWaypointsTraitsParameter.model_construct()
         error_messages = []
@@ -76,11 +74,10 @@ class GetSystemWaypointsTraitsParameter(BaseModel):
         if error_messages:
             # no match
             raise ValueError("No match found when setting the actual_instance in GetSystemWaypointsTraitsParameter with anyOf schemas: List[WaypointTraitSymbol], WaypointTraitSymbol. Details: " + ", ".join(error_messages))
-        else:
-            return v
+        return v
 
     @classmethod
-    def from_dict(cls, obj: Dict[str, Any]) -> Self:
+    def from_dict(cls, obj: dict[str, Any]) -> Self:
         return cls.from_json(json.dumps(obj))
 
     @classmethod
@@ -107,8 +104,7 @@ class GetSystemWaypointsTraitsParameter(BaseModel):
         if error_messages:
             # no match
             raise ValueError("No match found when deserializing the JSON string into GetSystemWaypointsTraitsParameter with anyOf schemas: List[WaypointTraitSymbol], WaypointTraitSymbol. Details: " + ", ".join(error_messages))
-        else:
-            return instance
+        return instance
 
     def to_json(self) -> str:
         """Returns the JSON representation of the actual instance"""
@@ -117,18 +113,16 @@ class GetSystemWaypointsTraitsParameter(BaseModel):
 
         if hasattr(self.actual_instance, "to_json") and callable(self.actual_instance.to_json):
             return self.actual_instance.to_json()
-        else:
-            return json.dumps(self.actual_instance)
+        return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], List[WaypointTraitSymbol], WaypointTraitSymbol]]:
+    def to_dict(self) -> dict[str, Any] | list[WaypointTraitSymbol] | WaypointTraitSymbol | None:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
 
         if hasattr(self.actual_instance, "to_dict") and callable(self.actual_instance.to_dict):
             return self.actual_instance.to_dict()
-        else:
-            return self.actual_instance
+        return self.actual_instance
 
     def to_str(self) -> str:
         """Returns the string representation of the actual instance"""
