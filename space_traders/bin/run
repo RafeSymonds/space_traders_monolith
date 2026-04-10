@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source env/bin/activate
+
+case "$1" in
+local)
+    fastapi dev app/main.py
+    ;;
+lan)
+    fastapi dev app/main.py --host 0.0.0.0 --port 8000
+    ;;
+*)
+    echo "Usage: $0 {local|lan}"
+    echo "       First argument = server mode"
+    echo "           local → localhost only (127.0.0.1)"
+    echo "           lan   → LAN-accessible (0.0.0.0)"
+    exit 1
+    ;;
+esac
