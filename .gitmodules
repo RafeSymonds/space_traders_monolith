@@ -1,0 +1,9 @@
+[submodule "space_traders"]
+	path = space_traders
+	url = git@github.com:RafeSymonds/space_traders.git
+[submodule "space_traders_api"]
+	path = space_traders_api
+	url = git@github.com:RafeSymonds/space_traders_api.git
+[submodule "space_traders_app"]
+	path = space_traders_app
+	url = git@github.com:RafeSymonds/space_traders_app.git
