@@ -9,19 +9,52 @@ Build a fully autonomous system that:
 
 ---
 
-## Current State
+## Current State (Updated: 2026-04-11)
 
 **Assets:**
-- 2 ships (need role assignment + navigation)
-- 175,000 credits
+- 2 ships:
+  - `TEMP1775869657-1`: Frigate (TRADING role, 400 fuel, 40 cargo)
+  - `TEMP1775869657-2`: Probe (TRANSPORT role, 0 fuel capacity, 0 cargo)
+- ~176,000 credits
 - Agent in system X1-V16
 
-**Infrastructure:**
-- `FleetBrain` - runs every 30 seconds
-- `MarketScanner` - scans markets for trade routes
-- `MiningBot` - extracts resources
-- `TradingBot` - finds arbitrage opportunities
-- `FleetExpansionManager` - buys new ships
+**Fleet Composition:**
+- No MINING ships (would need to purchase from shipyard)
+- No EXPLORATION ships
+- No REFINERY ships
+
+**What Works:**
+- ✅ FleetBrain auto-starts and runs every 30 seconds
+- ✅ Ships are refueled automatically when low
+- ✅ WaypointRegistry tracks all waypoints in system
+- ✅ ShipNavigator tracks ship movement states
+- ✅ Market discovery cycle sends ships to marketplaces
+- ✅ System scanning populates waypoint registry
+- ✅ Ships auto-position to asteroid fields (mining) or marketplaces (trading)
+
+**What's Implemented:**
+- `app/operations/waypoint_registry.py` - Waypoint caching, marketplace tracking
+- `app/operations/ship_navigator.py` - Ship movement state management
+- `FleetBrain._run_market_discovery()` - Discovers prices at marketplaces
+- `FleetBrain._position_ships()` - Auto-navigates ships to appropriate locations
+- `FleetBrain._ensure_system_scanned()` - Populates waypoint registry
+
+**What's Broken/Blocked:**
+- ❌ Cannot trade (only 1 market with data - need multiple markets to find routes)
+- ❌ Cannot mine (no MINING ships, no shipyard to buy them)
+- ❌ Cannot expand fleet (no shipyard in X1-V16 system)
+- ❌ Trading cycle only FINDS opportunities, doesn't EXECUTE trades
+
+---
+
+## Known Marketplaces in X1-V16
+
+| Waypoint | Type | Trade Goods | Notes |
+|----------|------|-------------|-------|
+| X1-V16-A1 | PLANET | 0 | Imports FOOD, MEDICINE, CLOTHING, etc. |
+| X1-V16-B6 | FUEL_STATION | 0 | Only sells FUEL |
+| X1-V16-B7 | ASTEROID_BASE | 18 goods | Main trading hub - exports GOLD, SILVER, PLATINUM |
+| X1-V16-FB5C | ENGINEERED_ASTEROID | 0 | Common metal deposits |
 
 ---
 
@@ -324,13 +357,107 @@ class FleetComposition:
 
 ## Implementation Order
 
-1. **WaypointRegistry** - Know where everything is
-2. **Auto-navigation** - Ships go places
-3. **Market Discovery** - Send ships to marketplaces to discover prices
-4. **Mining loop** - Extract resources
-5. **Trade execution** - Make actual profits (using known markets)
-6. **Expansion loop** - Buy more ships
-7. **Profit tracking** - Monitor success
+1. ✅ **WaypointRegistry** - Know where everything is
+2. ✅ **Auto-navigation** - Ships go places
+3. ✅ **Market Discovery** - Send ships to marketplaces to discover prices
+4. ❌ **Mining loop** - Extract resources (no mining ships available)
+5. ❌ **Trade execution** - Make actual profits (only 1 market discovered)
+6. ❌ **Expansion loop** - Buy more ships (no shipyard in system)
+7. 🔄 **Profit tracking** - Basic metrics in FleetBrain
+
+---
+
+## Next Steps to Profitability
+
+### Short Term (Within current system):
+1. **Discover more markets** - Send ships to X1-V16-A1, X1-V16-B6 to get price data
+2. **Implement trade execution** - Actually buy/sell when routes are found
+3. **Find/use jump gate** - Need to find another system with shipyard
+
+### Long Term:
+1. **Acquire mining ship** - Need shipyard to buy
+2. **Build trade routes** - With multiple markets, can trade ore for profit
+3. **Fleet expansion** - Buy more ships once shipyard found
+
+---
+
+## BLOCKED: No Shipyard, No Jump Gate
+
+**Problem:** X1-V16 system has neither a shipyard nor a jump gate. Cannot buy new ships or explore.
+
+**Impact:**
+- Cannot buy MINING ships (needed for ALUMINUM_ORE contract)
+- Cannot explore other systems (7000 systems exist but unreachable)
+- Fleet is stuck at 2 ships indefinitely
+
+**Options to Break Out:**
+1. **Find a way to get a ship with JUMP_DRIVE** - maybe via contract reward
+2. **Find hidden waypoint** - X1-V16-H53 exists but wasn't in initial scan
+3. **Trade within system** - Use existing ships for in-system trading
+4. **Register new account** - Might start in different system with shipyard
+
+---
+
+## What We CAN Do (Even Without Shipyard)
+
+### 1. Fulfill Existing Contract
+```
+Contract: cmntmxxjfo4ugri6xb8a3yxdi
+- Deliver 60 ALUMINUM_ORE to X1-V16-H53
+- Reward: 11,151 credits (1,449 + 9,702 on fulfillment)
+- Progress: 0/60 delivered
+```
+
+**Challenge:** Need a mining ship. Frigate can't mine efficiently.
+
+### 2. In-System Trading
+X1-V16 has multiple marketplaces with different goods:
+- X1-V16-A1: Imports FOOD, MEDICINE, CLOTHING
+- X1-V16-B7: Exports GOLD, SILVER, PLATINUM; Imports ores
+- X1-V16-B6: Only sells FUEL
+- X1-V16-H53: Imports IRON, INDUSTRIAL goods
+
+With 2 ships we could potentially do buy-low-sell-high trades.
+
+### 3. Systematic Market Discovery
+X1-V16-H53 wasn't in initial waypoint scan! There may be more hidden waypoints.
+- Need to send ships to H53 to discover its market data
+- May find other undiscovered waypoints
+
+---
+
+## Next Steps to Profitability
+
+### Short Term:
+1. **Navigate to H53** - Discover its market data
+2. **Try in-system trading** - Even without mining, can buy/sell
+3. **Find more hidden waypoints** - Systematic exploration
+
+### Long Term:
+1. **Find shipyard** - Need to discover system with jump gate
+2. **Acquire mining ship** - To fulfill contracts and mine ore
+3. **Build trade routes** - Multiple markets = profitable routes
+
+---
+
+## Market Data Discovered
+
+### X1-V16-B7 (ASTEROID_BASE) - Main Trading Hub
+- **Exports:** GOLD, SILVER, PLATINUM
+- **Imports:** GOLD_ORE, SILVER_ORE, PLATINUM_ORE, IRON_ORE, COPPER_ORE, ALUMINUM_ORE, etc.
+- **Trade Goods:** ICE_WATER (buy 17/sell 13), AMMONIA_ICE (buy 42/sell 38), QUARTZ_SAND (buy 22/sell 18)
+
+### X1-V16-A1 (PLANET)
+- **Imports:** FOOD, MEDICINE, CLOTHING, EQUIPMENT, JEWELRY, CYBER_IMPLANTS
+- **Trade Goods:** None visible
+
+### X1-V16-H53 (PLANET - CONTRACT DESTINATION)
+- **Exports:** IRON
+- **Hidden data:** Unknown (need to visit)
+
+---
+
+## API Endpoints to Add/Fix
 
 ---
 

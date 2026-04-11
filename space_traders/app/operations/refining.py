@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 
 from space_traders_api import FleetApi
+from space_traders_api.models import RefuelShipRequest, ShipRefineRequest
 
 
 class RefineryState(Enum):
@@ -84,10 +85,7 @@ class RefineryBot:
         try:
             result = self._fleet.ship_refine(
                 ship_symbol=ship_symbol,
-                ship_refine_request={
-                    "produce": produce_symbol,
-                    "units": units,
-                },
+                ship_refine_request=ShipRefineRequest(produce=produce_symbol),
             )
 
             produced = []
@@ -270,10 +268,13 @@ class FuelManager:
             if units is not None:
                 result = self._fleet.refuel_ship(
                     ship_symbol=ship_symbol,
-                    refuel_ship_request={"units": units},
+                    refuel_ship_request=RefuelShipRequest(units=units),
                 )
             else:
-                result = self._fleet.refuel_ship(ship_symbol=ship_symbol)
+                result = self._fleet.refuel_ship(
+                    ship_symbol=ship_symbol,
+                    refuel_ship_request=RefuelShipRequest(),
+                )
 
             if result.data and result.data.agent:
                 new_fuel = result.data.agent

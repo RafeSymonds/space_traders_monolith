@@ -281,6 +281,15 @@ class FleetBrain:
             return
 
         current_wp = ship.current_waypoint
+
+        contract_destination = self._get_contract_delivery_waypoint()
+        if contract_destination and current_wp != contract_destination:
+            target = contract_destination
+            self._navigate_to_waypoint(ship, target)
+            nav_state = self._navigator.get_state(ship.symbol)
+            nav_state.set_activity(ShipActivity.TRAVELING)
+            return
+
         if current_wp:
             wp_info = self._waypoint_registry.get_waypoint(current_wp)
             if wp_info and wp_info.is_marketplace:
@@ -296,6 +305,18 @@ class FleetBrain:
             self._navigate_to_waypoint(ship, target.symbol)
             nav_state = self._navigator.get_state(ship.symbol)
             nav_state.set_activity(ShipActivity.TRAVELING)
+
+    def _get_contract_delivery_waypoint(self) -> str | None:
+        try:
+            contracts_result = self._contracts_api.get_contracts()
+            for contract in contracts_result.data or []:
+                if contract.terms and contract.terms.deliver:
+                    for deliver in contract.terms.deliver:
+                        if deliver.units_fulfilled < deliver.units_required:
+                            return deliver.destination_symbol
+        except Exception:
+            pass
+        return None
 
     def _position_exploration_ship(self, ship: TrackedShip, nav_state) -> None:
         unvisited = self._waypoint_registry.get_unvisited_marketplaces(ship.system)
@@ -329,12 +350,11 @@ class FleetBrain:
 
     def _run_market_discovery(self) -> dict:
         discovered = 0
-        exploration_ships = self._fleet_manager.get_ships_by_role(ShipRole.EXPLORATION)
-        mining_ships = self._fleet_manager.get_ships_by_role(ShipRole.MINING)
+        all_ships = list(self._fleet_manager.ships.values())
 
-        ships_to_scan = exploration_ships[:2] + mining_ships[:2]
+        self._discover_contract_waypoints()
 
-        for ship in ships_to_scan:
+        for ship in all_ships[:4]:
             if not ship.current_waypoint:
                 continue
 
@@ -362,6 +382,29 @@ class FleetBrain:
                 pass
 
         return {"discovered": discovered}
+
+    def _discover_contract_waypoints(self) -> None:
+        try:
+            contracts_result = self._contracts_api.get_contracts()
+            for contract in contracts_result.data or []:
+                if contract.terms and contract.terms.deliver:
+                    for deliver in contract.terms.deliver:
+                        dest = deliver.destination_symbol
+                        if dest:
+                            system = dest.split("-")[0] + "-" + dest.split("-")[1]
+                            waypoint = dest
+                            if not self._waypoint_registry.get_waypoint(waypoint):
+                                try:
+                                    wp_result = self._systems_api.get_waypoint(
+                                        system_symbol=system,
+                                        waypoint_symbol=waypoint,
+                                    )
+                                    if wp_result.data:
+                                        self._waypoint_registry.add_waypoint(wp_result.data, system)
+                                except Exception:
+                                    pass
+        except Exception:
+            pass
 
     def _run_contract_cycle(self) -> dict:
         self._contract_coord.sync_contracts()
