@@ -13,6 +13,8 @@ from app.operations.navigation import ConstructionManager, JumpGateNavigator
 from app.operations.refining import FuelManager, RefineryBot
 from app.operations.shipyard import ShipMaintainer, ShipyardService
 from app.operations.trading import CargoManager, TradingBot
+from app.operations.waypoint_registry import WaypointRegistry
+from app.operations.ship_navigator import ShipNavigator, ShipActivity
 from space_traders_api import AgentsApi, ContractsApi, FleetApi, SystemsApi
 
 
@@ -61,6 +63,8 @@ class FleetBrain:
         self._contracts_api = ContractsApi(api_client=api_client)
 
         self._fleet_manager = FleetManager.get_instance()
+        self._waypoint_registry = WaypointRegistry.get_instance()
+        self._navigator = ShipNavigator.get_instance()
 
         self._mining_bot = MiningBot(self._fleet_api, self._fleet_manager)
         self._trading_bot = TradingBot(self._fleet_api, self._systems_api, self._fleet_manager)
@@ -85,6 +89,7 @@ class FleetBrain:
         self._last_metrics_update = datetime.now()
         self._auto_mode = False
         self._cycle_count = 0
+        self._current_system = None
 
     def start(self) -> dict:
         self._state = FleetBrainState.RUNNING
@@ -134,6 +139,12 @@ class FleetBrain:
             ships_result = self._fleet_api.get_my_ships()
             self._metrics.total_ships = len(ships_result.data) if ships_result.data else 0
 
+            for ship_data in ships_result.data or []:
+                tracked = self._fleet_manager.get_ship(ship_data.symbol)
+                if not tracked:
+                    role = self._determine_ship_role(ship_data)
+                    tracked = self._fleet_manager.add_ship(ship_data, role)
+
             mining_ships = self._fleet_manager.get_ships_by_role(ShipRole.MINING)
             trading_ships = self._fleet_manager.get_ships_by_role(ShipRole.TRADING)
             exploring_ships = self._fleet_manager.get_ships_by_role(ShipRole.EXPLORATION)
@@ -157,11 +168,32 @@ class FleetBrain:
 
         self._last_metrics_update = datetime.now()
 
+    def _determine_ship_role(self, ship_data) -> ShipRole:
+        frame_name = ""
+        if hasattr(ship_data, "frame") and ship_data.frame and hasattr(ship_data.frame, "name"):
+            frame_name = ship_data.frame.name.upper()
+
+        if "MINING" in frame_name:
+            return ShipRole.MINING
+        elif "EXPLORER" in frame_name or "SURVEY" in frame_name:
+            return ShipRole.EXPLORATION
+        elif "FRIGATE" in frame_name or "HAULER" in frame_name:
+            return ShipRole.TRADING
+        elif "SIPHON" in frame_name:
+            return ShipRole.GAS_SIPHONING
+        elif "REFINERY" in frame_name:
+            return ShipRole.REFINING
+        else:
+            return ShipRole.TRANSPORT
+
     def run_cycle(self) -> dict:
         if self._state != FleetBrainState.RUNNING:
             return {"success": False, "error": f"Brain is {self._state.value}"}
 
         self._cycle_count += 1
+
+        self._ensure_system_scanned()
+        self._position_ships()
 
         results = {
             "cycle": self._cycle_count,
@@ -173,10 +205,163 @@ class FleetBrain:
             "fuel": self._run_fuel_cycle(),
             "expansion": self._run_expansion_cycle(),
             "market_scan": self._run_market_scan(),
+            "market_discovery": self._run_market_discovery(),
         }
 
         self._update_metrics()
         return results
+
+    def _ensure_system_scanned(self) -> None:
+        if not self._current_system:
+            try:
+                agent = self._agents_api.get_my_agent()
+                if agent.data and agent.data.headquarters:
+                    self._current_system = (
+                        agent.data.headquarters.split("-")[0] + "-" + agent.data.headquarters.split("-")[1]
+                    )
+            except Exception:
+                return
+
+        if self._current_system and self._waypoint_registry.system_needs_scan(self._current_system):
+            self._waypoint_registry.scan_system(self._systems_api, self._current_system)
+
+    def _position_ships(self) -> None:
+        for ship in self._fleet_manager.ships.values():
+            self._position_ship(ship)
+
+    def _position_ship(self, ship: TrackedShip) -> None:
+        nav_state = self._navigator.get_state(ship.symbol)
+
+        if nav_state.is_traveling():
+            if nav_state.should_have_arrived():
+                self._navigator.ship_arrived(ship.symbol)
+                ship.is_busy = False
+                self._refresh_ship_position(ship)
+            return
+
+        if ship.role == ShipRole.MINING:
+            self._position_mining_ship(ship, nav_state)
+        elif ship.role == ShipRole.TRADING:
+            self._position_trading_ship(ship, nav_state)
+        elif ship.role == ShipRole.EXPLORATION:
+            self._position_exploration_ship(ship, nav_state)
+
+    def _refresh_ship_position(self, ship: TrackedShip) -> None:
+        try:
+            result = self._fleet_api.get_my_ship(ship_symbol=ship.symbol)
+            if result.data and result.data.nav:
+                ship.current_waypoint = result.data.nav.waypoint_symbol
+                ship.system = result.data.nav.system_symbol
+        except Exception:
+            pass
+
+    def _position_mining_ship(self, ship: TrackedShip, nav_state) -> None:
+        if ship.is_busy and nav_state.activity != ShipActivity.IDLE:
+            return
+
+        current_wp = ship.current_waypoint
+        if current_wp:
+            wp_info = self._waypoint_registry.get_waypoint(current_wp)
+            if wp_info and wp_info.is_asteroid_field:
+                self._navigator.set_activity(ship.symbol, ShipActivity.MINING, ship)
+                return
+
+        asteroids = self._waypoint_registry.get_asteroid_fields(ship.system)
+        if not asteroids:
+            return
+
+        target = asteroids[0]
+        if current_wp and current_wp != target.symbol:
+            self._navigate_to_waypoint(ship, target.symbol)
+            nav_state = self._navigator.get_state(ship.symbol)
+            nav_state.set_activity(ShipActivity.TRAVELING)
+
+    def _position_trading_ship(self, ship: TrackedShip, nav_state) -> None:
+        if ship.is_busy and nav_state.activity != ShipActivity.IDLE:
+            return
+
+        current_wp = ship.current_waypoint
+        if current_wp:
+            wp_info = self._waypoint_registry.get_waypoint(current_wp)
+            if wp_info and wp_info.is_marketplace:
+                self._navigator.set_activity(ship.symbol, ShipActivity.TRADING, ship)
+                return
+
+        marketplaces = self._waypoint_registry.get_marketplaces(ship.system)
+        if not marketplaces:
+            return
+
+        target = marketplaces[0]
+        if current_wp and current_wp != target.symbol:
+            self._navigate_to_waypoint(ship, target.symbol)
+            nav_state = self._navigator.get_state(ship.symbol)
+            nav_state.set_activity(ShipActivity.TRAVELING)
+
+    def _position_exploration_ship(self, ship: TrackedShip, nav_state) -> None:
+        unvisited = self._waypoint_registry.get_unvisited_marketplaces(ship.system)
+        if unvisited:
+            target = unvisited[0]
+            self._navigate_to_waypoint(ship, target.symbol)
+            nav_state = self._navigator.get_state(ship.symbol)
+            nav_state.set_activity(ShipActivity.TRAVELING)
+            return
+
+        self._navigator.set_activity(ship.symbol, ShipActivity.EXPLORING)
+
+    def _navigate_to_waypoint(self, ship: TrackedShip, waypoint: str) -> bool:
+        try:
+            self._fleet_api.orbit_ship(ship_symbol=ship.symbol)
+            from space_traders_api.models import NavigateShipRequest
+
+            nav_request = NavigateShipRequest(waypointSymbol=waypoint)
+            nav_result = self._fleet_api.navigate_ship(
+                ship_symbol=ship.symbol,
+                navigate_ship_request=nav_request,
+            )
+            if nav_result.data:
+                distance = self._waypoint_registry.distance(ship.current_waypoint or "", waypoint)
+                estimated_seconds = max(30, int(distance * 2))
+                self._navigator.navigate_ship(ship, waypoint, estimated_seconds)
+                return True
+        except Exception:
+            pass
+        return False
+
+    def _run_market_discovery(self) -> dict:
+        discovered = 0
+        exploration_ships = self._fleet_manager.get_ships_by_role(ShipRole.EXPLORATION)
+        mining_ships = self._fleet_manager.get_ships_by_role(ShipRole.MINING)
+
+        ships_to_scan = exploration_ships[:2] + mining_ships[:2]
+
+        for ship in ships_to_scan:
+            if not ship.current_waypoint:
+                continue
+
+            wp_info = self._waypoint_registry.get_waypoint(ship.current_waypoint)
+            if not wp_info or not wp_info.is_marketplace:
+                continue
+
+            if wp_info.market_data_fetched_at and not wp_info.market_data_stale:
+                continue
+
+            try:
+                market_result = self._systems_api.get_market(
+                    system_symbol=ship.system or "",
+                    waypoint_symbol=ship.current_waypoint,
+                )
+                if market_result.data:
+                    self._market_scanner.get_db().update_market(
+                        ship.current_waypoint,
+                        ship.system or "",
+                        market_result.data,
+                    )
+                    self._waypoint_registry.mark_market_scanned(ship.current_waypoint)
+                    discovered += 1
+            except Exception:
+                pass
+
+        return {"discovered": discovered}
 
     def _run_contract_cycle(self) -> dict:
         self._contract_coord.sync_contracts()

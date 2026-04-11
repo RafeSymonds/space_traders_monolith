@@ -15,7 +15,21 @@ install)
     echo ">>> Done! Run './scripts/run.sh local' or './scripts/run.sh lan'"
     ;;
 
+setup)
+    echo ">>> Running setup wizard..."
+    ./scripts/setup.sh
+    ;;
+
 local)
+    # Check if token exists
+    if [ ! -f "space_traders/.env" ] || ! grep -q "SPACE_TRADERS_TOKEN=" "space_traders/.env" 2>/dev/null; then
+        echo ">>> No API token found. Running setup..."
+        ./scripts/setup.sh
+        echo ""
+        echo ">>> After setup, run './scripts/run.sh local' again"
+        exit 0
+    fi
+    
     echo ">>> Starting backend (localhost only)..."
     cd space_traders && ./bin/run local &
     BACKEND_PID=$!
@@ -38,6 +52,15 @@ local)
     ;;
 
 lan)
+    # Check if token exists
+    if [ ! -f "space_traders/.env" ] || ! grep -q "SPACE_TRADERS_TOKEN=" "space_traders/.env" 2>/dev/null; then
+        echo ">>> No API token found. Running setup..."
+        ./scripts/setup.sh
+        echo ""
+        echo ">>> After setup, run './scripts/run.sh lan' again"
+        exit 0
+    fi
+    
     echo ">>> Starting backend (LAN accessible)..."
     cd space_traders && ./bin/run lan &
     BACKEND_PID=$!
@@ -72,20 +95,20 @@ build)
 
 stop)
     echo ">>> Stopping all servers..."
-    pkill -f "fastapi dev" 2>/dev/null
+    pkill -f "uvicorn" 2>/dev/null
     pkill -f "vite" 2>/dev/null
     echo ">>> Done"
     ;;
 
 status)
     echo ">>> Checking server status..."
-    if curl -s http://localhost:8000/api/v1/fleet/agent > /dev/null 2>&1; then
+    if curl -s --max-time 2 http://localhost:8000/api/v1/fleet/agent > /dev/null 2>&1; then
         echo "  Backend: RUNNING"
     else
         echo "  Backend: STOPPED"
     fi
     
-    if curl -s http://localhost:5173 > /dev/null 2>&1; then
+    if curl -s --max-time 2 http://localhost:5173 > /dev/null 2>&1; then
         echo "  Frontend: RUNNING"
     else
         echo "  Frontend: STOPPED"
@@ -93,10 +116,11 @@ status)
     ;;
 
 *)
-    echo "Usage: $0 {install|local|lan|test|build|stop|status}"
+    echo "Usage: $0 {install|setup|local|lan|test|build|stop|status}"
     echo ""
     echo "Commands:"
     echo "  install  - Install all dependencies"
+    echo "  setup    - Get API token (register/login)"
     echo "  local    - Start both servers (localhost only)"
     echo "  lan      - Start both servers (LAN accessible)"
     echo "  test     - Run backend tests"
