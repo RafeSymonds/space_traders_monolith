@@ -147,3 +147,131 @@ async def get_system_waypoints(
 @router.get("/expansion/stats")
 async def get_expansion_stats(brain: FleetBrain = Depends(get_fleet_brain)):
     return brain._expansion_manager.get_expansion_stats()
+
+
+@router.get("/trading/multi-hop-routes")
+async def get_multi_hop_routes(
+    system_symbol: str | None = None,
+    min_profit: int = 500,
+    max_hops: int = 3,
+    brain: FleetBrain = Depends(get_fleet_brain),
+):
+    if system_symbol:
+        routes = brain._route_planner.find_multi_hop_routes(system_symbol, max_hops, min_profit)
+        return {
+            "routes": [
+                {
+                    "stops": r.stops,
+                    "goods": r.goods,
+                    "total_profit": r.total_profit,
+                    "estimated_time_minutes": r.estimated_time_minutes,
+                    "legs": r.legs,
+                }
+                for r in routes
+            ],
+            "count": len(routes),
+        }
+    return {"routes": [], "count": 0}
+
+
+@router.get("/trading/role-optimization")
+async def get_role_optimization(brain: FleetBrain = Depends(get_fleet_brain)):
+    return brain._role_assigner.get_assignment_stats()
+
+
+@router.post("/trading/execute-route")
+async def execute_trade_route(
+    buy_waypoint: str,
+    sell_waypoint: str,
+    trade_good: str,
+    ship_symbol: str,
+    quantity: int | None = None,
+    brain: FleetBrain = Depends(get_fleet_brain),
+):
+    route = brain._market_scanner.get_db().find_best_route(trade_good, min_profit=100)
+    if route:
+        execution = brain._trade_executor.execute_trade(route[0], ship_symbol, quantity)
+        return {"success": True, "trade": str(execution)}
+    return {"success": False, "error": "No route found"}
+
+
+@router.get("/trading/active-trades")
+async def get_active_trades(brain: FleetBrain = Depends(get_fleet_brain)):
+    return {
+        "trades": [
+            {"ship": t.ship_symbol, "state": t.state.value, "route": t.trade_route.trade_good}
+            for t in brain._trade_executor._active_trades.values()
+        ]
+    }
+
+
+@router.get("/trading/profit-history")
+async def get_profit_history(limit: int = 50, brain: FleetBrain = Depends(get_fleet_brain)):
+    history = brain._trade_executor.get_trade_history(limit)
+    return {
+        "total_profit": brain._trade_executor.get_total_profit(),
+        "trades": history,
+    }
+
+
+@router.get("/economic/summary")
+async def get_economic_summary(brain: FleetBrain = Depends(get_fleet_brain)):
+    return brain._economic_engine.get_market_summary()
+
+
+@router.get("/economic/opportunities")
+async def get_economic_opportunities(brain: FleetBrain = Depends(get_fleet_brain)):
+    opportunities = brain._economic_engine.analyze_market()
+    return {
+        "opportunities": [
+            {
+                "type": o.type,
+                "score": o.score,
+                "description": o.description,
+                "expected_return": o.expected_return,
+                "risk_factor": o.risk_factor,
+                "time_horizon_minutes": o.time_horizon_minutes,
+            }
+            for o in opportunities
+        ],
+        "count": len(opportunities),
+    }
+
+
+@router.get("/contracts/prioritized")
+async def get_prioritized_contracts(brain: FleetBrain = Depends(get_fleet_brain)):
+    try:
+        contracts_result = brain._contracts_api.get_contracts()
+        contracts = []
+        if contracts_result.data:
+            for c in contracts_result.data:
+                contracts.append(
+                    {
+                        "id": c.id,
+                        "faction_symbol": c.faction_symbol,
+                        "type": c.type,
+                        "accepted": c.accepted,
+                        "fulfilled": c.fulfilled,
+                        "deadline": str(c.deadline) if c.deadline else None,
+                        "payment": {
+                            "on_accepted": c.payment.on_accepted if c.payment else 0,
+                            "on_fulfilled": c.payment.on_fulfilled if c.payment else 0,
+                        },
+                        "terms": {
+                            "deliver": [
+                                {
+                                    "trade_symbol": d.trade_symbol,
+                                    "units_required": d.units_required,
+                                    "units_fulfilled": d.units_fulfilled,
+                                    "destination_symbol": d.destination_symbol,
+                                }
+                                for d in (c.terms.deliver or [])
+                            ]
+                        },
+                    }
+                )
+
+        scored = brain._contract_scorer.prioritize_contracts(contracts)
+        return {"contracts": scored}
+    except Exception as e:
+        return {"contracts": [], "error": str(e)}

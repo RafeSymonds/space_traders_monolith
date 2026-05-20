@@ -15,6 +15,9 @@ from app.operations.shipyard import ShipMaintainer, ShipyardService
 from app.operations.trading import CargoManager, TradingBot
 from app.operations.waypoint_registry import WaypointRegistry
 from app.operations.ship_navigator import ShipNavigator, ShipActivity
+from app.operations.trade_executor import SmartTradeExecutor, MultiHopRoutePlanner, ProfitCalculator
+from app.operations.role_assigner import DynamicRoleAssigner, SmartTaskAssigner
+from app.operations.economic_engine import EconomicEngine, ContractScorer, RefineryCoordinator, CargoOptimization
 from space_traders_api import AgentsApi, ContractsApi, FleetApi, SystemsApi
 
 
@@ -43,6 +46,15 @@ class FleetMetrics:
     credits_spent: int = 0
     fuel_produced: int = 0
     markets_scanned: int = 0
+    trades_executed: int = 0
+    active_traders: int = 0
+    best_trade_profit: int = 0
+    market_condition: str = "unknown"
+    economic_phase: str = "expansion"
+    strategy: str = "swing"
+    opportunities_count: int = 0
+    refinery_chains: int = 0
+    total_expected_profit: int = 0
 
 
 @dataclass
@@ -84,12 +96,28 @@ class FleetBrain:
         self._contract_coord = ContractCoordinator(self._contracts_api, self._fleet_api)
         self._expansion_manager = FleetExpansionManager(self._fleet_api)
 
+        self._trade_executor = SmartTradeExecutor(
+            self._fleet_api, self._fleet_manager, self._market_scanner.get_db(), self._navigator
+        )
+        self._route_planner = MultiHopRoutePlanner(self._market_scanner.get_db())
+        self._role_assigner = DynamicRoleAssigner(self._fleet_manager, self._market_scanner.get_db())
+        self._task_assigner = SmartTaskAssigner(self._fleet_manager, self._market_scanner.get_db())
+
+        self._economic_engine = EconomicEngine(self._market_scanner.get_db())
+        self._contract_scorer = ContractScorer(self._market_scanner.get_db())
+
         self._state = FleetBrainState.IDLE
         self._metrics = FleetMetrics()
         self._last_metrics_update = datetime.now()
         self._auto_mode = False
         self._cycle_count = 0
         self._current_system = None
+        self._cycle_interval = 15
+        self._parallel_execution = True
+        self._last_credits = 0
+        self._start_time = datetime.now()
+        self._last_profit_report = datetime.now()
+        self._profit_report_interval = 300
 
     def start(self) -> dict:
         self._state = FleetBrainState.RUNNING
@@ -126,6 +154,10 @@ class FleetBrain:
                 "credits_spent": self._metrics.credits_spent,
                 "fuel_produced": self._metrics.fuel_produced,
                 "markets_scanned": self._metrics.markets_scanned,
+                "trades_executed": self._metrics.trades_executed,
+                "best_trade_profit": self._metrics.best_trade_profit,
+                "market_condition": self._metrics.market_condition,
+                "active_traders": self._metrics.active_traders,
             },
             "last_update": self._last_metrics_update.isoformat(),
         }
@@ -161,7 +193,12 @@ class FleetBrain:
                     cargo_units += ship.cargo.units or 0
             self._metrics.total_cargo_units = cargo_units
 
-            self._metrics.markets_scanned = len(self._market_scanner.get_db().get_all_markets())
+            self._metrics.trades_executed = len(self._trade_executor.get_trade_history())
+            self._metrics.best_trade_profit = self._trade_executor.get_total_profit()
+            self._metrics.market_condition = self._role_assigner.get_market_condition().value
+            self._metrics.active_traders = len(
+                [t for t in self._fleet_manager.ships.values() if t.role == ShipRole.TRADING and not t.is_busy]
+            )
 
         except Exception:
             pass
@@ -193,6 +230,7 @@ class FleetBrain:
         self._cycle_count += 1
 
         self._ensure_system_scanned()
+        self._run_role_optimization()
         self._position_ships()
 
         results = {
@@ -201,15 +239,71 @@ class FleetBrain:
             "mining": self._run_mining_cycle(),
             "refining": self._run_refining_cycle(),
             "trading": self._run_trading_cycle(),
+            "trade_execution": self._run_trade_execution(),
+            "multi_hop": self._find_multi_hop_routes(),
             "exploration": self._run_exploration_cycle(),
             "fuel": self._run_fuel_cycle(),
             "expansion": self._run_expansion_cycle(),
             "market_scan": self._run_market_scan(),
             "market_discovery": self._run_market_discovery(),
+            "role_optimization": self._get_role_optimization_status(),
+            "economic": self._run_economic_cycle(),
         }
 
         self._update_metrics()
         return results
+
+    def _run_role_optimization(self) -> dict:
+        assignments = self._role_assigner.analyze_and_assign()
+        return {"assignments": len(assignments)}
+
+    def _get_role_optimization_status(self) -> dict:
+        return self._role_assigner.get_assignment_stats()
+
+    def _find_multi_hop_routes(self) -> dict:
+        if not self._current_system:
+            return {"routes": [], "count": 0}
+
+        routes = self._route_planner.find_multi_hop_routes(
+            self._current_system,
+            max_hops=3,
+            min_profit=500,
+        )
+        return {
+            "routes": [
+                {
+                    "stops": r.stops,
+                    "goods": r.goods,
+                    "total_profit": r.total_profit,
+                    "estimated_time_minutes": r.estimated_time_minutes,
+                }
+                for r in routes[:5]
+            ],
+            "count": len(routes),
+        }
+
+    def _run_trade_execution(self) -> dict:
+        trading_ships = self._fleet_manager.get_ships_by_role(ShipRole.TRADING)
+        executed = 0
+
+        for ship in trading_ships[:3]:
+            if ship.is_busy:
+                continue
+
+            active_trade = self._trade_executor.get_active_trade(ship.symbol)
+            if active_trade:
+                result = self._trade_executor.tick_trade(ship.symbol)
+                if result.get("done") and result.get("success"):
+                    executed += 1
+            else:
+                opportunities = self._market_scanner.get_trade_opportunities(min_profit=500, min_volume=10)
+                if opportunities:
+                    best = opportunities[0]
+                    route = self._market_scanner.get_db().find_best_route(best["trade_good"], min_profit=500)
+                    if route:
+                        self._trade_executor.execute_trade(route[0], ship.symbol)
+
+        return {"executed": executed}
 
     def _ensure_system_scanned(self) -> None:
         if not self._current_system:
@@ -270,11 +364,23 @@ class FleetBrain:
         if not asteroids:
             return
 
-        target = asteroids[0]
-        if current_wp and current_wp != target.symbol:
-            self._navigate_to_waypoint(ship, target.symbol)
-            nav_state = self._navigator.get_state(ship.symbol)
-            nav_state.set_activity(ShipActivity.TRAVELING)
+    def _handle_full_cargo(self, ship: TrackedShip) -> None:
+        if ship.role == ShipRole.MINING:
+            best_sell = self._market_scanner.get_db().find_best_route(
+                "IRON_ORE", min_profit=100
+            ) or self._market_scanner.get_db().find_best_route("COPPER_ORE", min_profit=100)
+            if best_sell and ship.current_waypoint != best_sell[0].sell_waypoint:
+                self._navigate_to_waypoint(ship, best_sell[0].sell_waypoint)
+                self._navigator.get_state(ship.symbol).set_activity(ShipActivity.TRAVELING)
+            elif ship.current_waypoint:
+                try:
+                    self._fleet_api.sell_cargo(
+                        ship_symbol=ship.symbol,
+                        sell_cargo_request={"trade_symbol": "IRON_ORE", "units": ship.cargo_used},
+                    )
+                    ship.is_busy = False
+                except Exception:
+                    pass
 
     def _position_trading_ship(self, ship: TrackedShip, nav_state) -> None:
         if ship.is_busy and nav_state.activity != ShipActivity.IDLE:
@@ -383,6 +489,25 @@ class FleetBrain:
 
         return {"discovered": discovered}
 
+    def _run_economic_cycle(self) -> dict:
+        opportunities = self._economic_engine.analyze_market()
+        summary = self._economic_engine.get_market_summary()
+
+        self._metrics.economic_phase = summary.get("phase", "expansion")
+        self._metrics.strategy = summary.get("strategy", "swing")
+        self._metrics.opportunities_count = summary.get("opportunities_count", 0)
+        self._metrics.refinery_chains = summary.get("refinery_chains", 0)
+        self._metrics.total_expected_profit = summary.get("total_expected_profit", 0)
+
+        return {
+            "phase": summary.get("phase"),
+            "strategy": summary.get("strategy"),
+            "opportunities": len(opportunities),
+            "best_opportunity": summary.get("best_opportunity"),
+            "refinery_chains": summary.get("refinery_chains", 0),
+            "high_priority": summary.get("high_priority", 0),
+        }
+
     def _discover_contract_waypoints(self) -> None:
         try:
             contracts_result = self._contracts_api.get_contracts()
@@ -424,9 +549,13 @@ class FleetBrain:
         results = []
         total_extracted = 0
 
-        for ship in mining_ships[:5]:
+        for ship in mining_ships:
             if not ship.is_busy:
                 try:
+                    if ship.cargo_used >= ship.cargo_capacity * 0.9:
+                        self._handle_full_cargo(ship)
+                        continue
+
                     result = self._mining_bot.extract(ship)
                     if result:
                         units = result.total_units if hasattr(result, "total_units") else 0
@@ -483,9 +612,34 @@ class FleetBrain:
         trading_ships = self._fleet_manager.get_ships_by_role(ShipRole.TRADING)
         opportunities = self._market_scanner.get_trade_opportunities(min_profit=500, min_volume=10)
 
+        executed_trades = 0
+        total_profit = 0
+
+        for ship in trading_ships[:3]:
+            if ship.is_busy:
+                continue
+
+            active_trade = self._trade_executor.get_active_trade(ship.symbol)
+            if active_trade:
+                result = self._trade_executor.tick_trade(ship.symbol)
+                if result.get("done") and result.get("success"):
+                    executed_trades += 1
+                    total_profit += result.get("profit", 0)
+            elif opportunities:
+                best = opportunities[0]
+                route = self._market_scanner.get_db().find_best_route(best["trade_good"], min_profit=500)
+                if route:
+                    self._trade_executor.execute_trade(route[0], ship.symbol)
+
+        if executed_trades > 0:
+            self._metrics.total_trades += executed_trades
+            self._metrics.total_profit += total_profit
+
         return {
             "active_traders": len(trading_ships),
             "opportunities_found": len(opportunities),
+            "executed_trades": executed_trades,
+            "profit": total_profit,
             "opportunities": opportunities[:5],
         }
 
@@ -548,16 +702,32 @@ class FleetBrain:
                     "credits": getattr(agent_result.data, "credits", 0) or 0,
                     "headquarters": getattr(agent_result.data, "headquarters", ""),
                 }
-                if agent["headquarters"]:
-                    result = self._expansion_manager.attempt_expansion(
-                        agent,
-                        agent["headquarters"],
-                        target_fleet_size=20,
-                    )
-                    if result:
-                        self._metrics.ships_purchased += 1
-                        self._metrics.credits_spent += result.price
-                        return {"purchased": result.ship_symbol, "price": result.price}
+
+                target_fleet_size = 50
+                current_ships = self._metrics.total_ships
+
+                if agent["credits"] > 100000 and current_ships < target_fleet_size:
+                    purchases = 0
+                    while agent["credits"] > 150000 and current_ships + purchases < target_fleet_size:
+                        if agent["headquarters"]:
+                            result = self._expansion_manager.attempt_expansion(
+                                agent,
+                                agent["headquarters"],
+                                target_fleet_size=target_fleet_size,
+                            )
+                            if result and result.success:
+                                purchases += 1
+                                self._metrics.ships_purchased += 1
+                                self._metrics.credits_spent += result.price
+                                agent["credits"] -= result.price
+                            else:
+                                break
+                        else:
+                            break
+
+                    if purchases > 0:
+                        return {"purchased": purchases, "target_reached": current_ships + purchases}
+
         except Exception:
             pass
 
